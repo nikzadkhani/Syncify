@@ -1,0 +1,42 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="song">
+            <h2><span jhiTranslate="syncifyApp.song.detail.title">Song</span> {{ song.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="syncifyApp.song.artist">Artist</span></dt>
+                <dd>
+                    <span>{{ song.artist }}</span>
+                </dd>
+                <dt><span jhiTranslate="syncifyApp.song.name">Name</span></dt>
+                <dd>
+                    <span>{{ song.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="syncifyApp.song.spotifyId">Spotify Id</span></dt>
+                <dd>
+                    <span>{{ song.spotifyId }}</span>
+                </dd>
+                <dt><span jhiTranslate="syncifyApp.song.appleId">Apple Id</span></dt>
+                <dd>
+                    <span>{{ song.appleId }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/song', song.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -44,6 +44,12 @@ public class CacheConfiguration {
             createCache(cm, com.syncify.app.domain.User.class.getName());
             createCache(cm, com.syncify.app.domain.Authority.class.getName());
             createCache(cm, com.syncify.app.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.syncify.app.domain.Song.class.getName());
+            createCache(cm, com.syncify.app.domain.Song.class.getName() + ".playlists");
+            createCache(cm, com.syncify.app.domain.Playlist.class.getName());
+            createCache(cm, com.syncify.app.domain.Playlist.class.getName() + ".users");
+            createCache(cm, com.syncify.app.domain.UserDetails.class.getName());
+            createCache(cm, com.syncify.app.domain.UserDetails.class.getName() + ".playlists");
             // jhipster-needle-caffeine-add-entry
         };
     }

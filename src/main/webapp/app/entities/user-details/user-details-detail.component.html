@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="userDetails">
+            <h2><span jhiTranslate="syncifyApp.userDetails.detail.title">User Details</span> {{ userDetails.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="syncifyApp.userDetails.username">Username</span></dt>
+                <dd>
+                    <span>{{ userDetails.username }}</span>
+                </dd>
+                <dt><span jhiTranslate="syncifyApp.userDetails.password">Password</span></dt>
+                <dd>
+                    <span>{{ userDetails.password }}</span>
+                </dd>
+                <dt><span jhiTranslate="syncifyApp.userDetails.platformUserName">Platform User Name</span></dt>
+                <dd>
+                    <span>{{ userDetails.platformUserName }}</span>
+                </dd>
+                <dt><span jhiTranslate="syncifyApp.userDetails.playlist">Playlist</span></dt>
+                <dd>
+                    <span *ngFor="let playlist of userDetails.playlists; let last = last">
+                        <a [routerLink]="['/playlist', playlist?.id, 'view']">{{ playlist.id }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/user-details', userDetails.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

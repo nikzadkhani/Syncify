@@ -1,0 +1,25 @@
+{
+  "syncifyApp": {
+    "userDetails": {
+      "home": {
+        "title": "UserDetails",
+        "createLabel": "Créer un nouveau User Details",
+        "createOrEditLabel": "Créer ou éditer un User Details",
+        "notFound": "Aucun User Details trouvé"
+      },
+      "created": "Un nouveau User Details a été créé avec l'identifiant {{ param }}",
+      "updated": "Le User Details avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le User Details avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le User Details {{ id }} ?"
+      },
+      "detail": {
+        "title": "User Details"
+      },
+      "username": "Username",
+      "password": "Password",
+      "platformUserName": "Platform User Name",
+      "playlist": "Playlist"
+    }
+  }
+}

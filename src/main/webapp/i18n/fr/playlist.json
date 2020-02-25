@@ -1,0 +1,25 @@
+{
+  "syncifyApp": {
+    "playlist": {
+      "home": {
+        "title": "Playlists",
+        "createLabel": "Créer un nouveau Playlist",
+        "createOrEditLabel": "Créer ou éditer un Playlist",
+        "notFound": "Aucun Playlist trouvé"
+      },
+      "created": "Un nouveau Playlist a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Playlist avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Playlist avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Playlist {{ id }} ?"
+      },
+      "detail": {
+        "title": "Playlist"
+      },
+      "name": "Name",
+      "author": "Author",
+      "song": "Song",
+      "user": "User"
+    }
+  }
+}

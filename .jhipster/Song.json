@@ -1,0 +1,39 @@
+{
+    "name": "Song",
+    "fields": [
+        {
+            "fieldName": "artist",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "spotifyId",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "appleId",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "playlist",
+            "otherEntityRelationshipName": "song",
+            "relationshipName": "playlist"
+        }
+    ],
+    "changelogDate": "20200225194000",
+    "entityTableName": "song",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}
