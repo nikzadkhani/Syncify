@@ -14,9 +14,8 @@ entity Playlist{
 
 entity UserDetails{
 	id UUID,
-	username String,
-    password String,
     platformUserName String,
+  
 	
 }
 
@@ -27,3 +26,4 @@ relationship OneToMany{
 relationship ManyToMany{
 	UserDetails{playlist} to Playlist{user}
 }
+

@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(UserDetailsService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new UserDetails(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+      elemDefault = new UserDetails(0, 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -54,8 +54,6 @@ describe('Service Tests', () => {
       it('should update a UserDetails', () => {
         const returnedFromService = Object.assign(
           {
-            username: 'BBBBBB',
-            password: 'BBBBBB',
             platformUserName: 'BBBBBB'
           },
           elemDefault
@@ -73,8 +71,6 @@ describe('Service Tests', () => {
       it('should return a list of UserDetails', () => {
         const returnedFromService = Object.assign(
           {
-            username: 'BBBBBB',
-            password: 'BBBBBB',
             platformUserName: 'BBBBBB'
           },
           elemDefault

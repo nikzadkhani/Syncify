@@ -23,8 +23,6 @@
             <thead>
                 <tr>
                     <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="syncifyApp.userDetails.username">Username</span></th>
-                    <th scope="col" ><span jhiTranslate="syncifyApp.userDetails.password">Password</span></th>
                     <th scope="col" ><span jhiTranslate="syncifyApp.userDetails.platformUserName">Platform User Name</span></th>
                     <th scope="col" ><span jhiTranslate="syncifyApp.userDetails.playlist">Playlist</span></th>
                     <th scope="col"></th>
@@ -33,8 +31,6 @@
             <tbody>
                 <tr *ngFor="let userDetails of userDetails ;trackBy: trackId">
                     <td><a [routerLink]="['/user-details', userDetails.id, 'view']">{{ userDetails.id }}</a></td>
-                    <td>{{ userDetails.username }}</td>
-                    <td>{{ userDetails.password }}</td>
                     <td>{{ userDetails.platformUserName }}</td>
                     <td>
                         <span *ngFor="let playlist of userDetails.playlists; let last = last">

@@ -38,12 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = SyncifyApp.class)
 public class UserDetailsResourceIT {
 
-    private static final String DEFAULT_USERNAME = "AAAAAAAAAA";
-    private static final String UPDATED_USERNAME = "BBBBBBBBBB";
-
-    private static final String DEFAULT_PASSWORD = "AAAAAAAAAA";
-    private static final String UPDATED_PASSWORD = "BBBBBBBBBB";
-
     private static final String DEFAULT_PLATFORM_USER_NAME = "AAAAAAAAAA";
     private static final String UPDATED_PLATFORM_USER_NAME = "BBBBBBBBBB";
 
@@ -92,8 +86,6 @@ public class UserDetailsResourceIT {
      */
     public static UserDetails createEntity(EntityManager em) {
         UserDetails userDetails = new UserDetails()
-            .username(DEFAULT_USERNAME)
-            .password(DEFAULT_PASSWORD)
             .platformUserName(DEFAULT_PLATFORM_USER_NAME);
         return userDetails;
     }
@@ -105,8 +97,6 @@ public class UserDetailsResourceIT {
      */
     public static UserDetails createUpdatedEntity(EntityManager em) {
         UserDetails userDetails = new UserDetails()
-            .username(UPDATED_USERNAME)
-            .password(UPDATED_PASSWORD)
             .platformUserName(UPDATED_PLATFORM_USER_NAME);
         return userDetails;
     }
@@ -131,8 +121,6 @@ public class UserDetailsResourceIT {
         List<UserDetails> userDetailsList = userDetailsRepository.findAll();
         assertThat(userDetailsList).hasSize(databaseSizeBeforeCreate + 1);
         UserDetails testUserDetails = userDetailsList.get(userDetailsList.size() - 1);
-        assertThat(testUserDetails.getUsername()).isEqualTo(DEFAULT_USERNAME);
-        assertThat(testUserDetails.getPassword()).isEqualTo(DEFAULT_PASSWORD);
         assertThat(testUserDetails.getPlatformUserName()).isEqualTo(DEFAULT_PLATFORM_USER_NAME);
     }
 
@@ -167,8 +155,6 @@ public class UserDetailsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(userDetails.getId().intValue())))
-            .andExpect(jsonPath("$.[*].username").value(hasItem(DEFAULT_USERNAME)))
-            .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD)))
             .andExpect(jsonPath("$.[*].platformUserName").value(hasItem(DEFAULT_PLATFORM_USER_NAME)));
     }
     
@@ -216,8 +202,6 @@ public class UserDetailsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(userDetails.getId().intValue()))
-            .andExpect(jsonPath("$.username").value(DEFAULT_USERNAME))
-            .andExpect(jsonPath("$.password").value(DEFAULT_PASSWORD))
             .andExpect(jsonPath("$.platformUserName").value(DEFAULT_PLATFORM_USER_NAME));
     }
 
@@ -242,8 +226,6 @@ public class UserDetailsResourceIT {
         // Disconnect from session so that the updates on updatedUserDetails are not directly saved in db
         em.detach(updatedUserDetails);
         updatedUserDetails
-            .username(UPDATED_USERNAME)
-            .password(UPDATED_PASSWORD)
             .platformUserName(UPDATED_PLATFORM_USER_NAME);
 
         restUserDetailsMockMvc.perform(put("/api/user-details")
@@ -255,8 +237,6 @@ public class UserDetailsResourceIT {
         List<UserDetails> userDetailsList = userDetailsRepository.findAll();
         assertThat(userDetailsList).hasSize(databaseSizeBeforeUpdate);
         UserDetails testUserDetails = userDetailsList.get(userDetailsList.size() - 1);
-        assertThat(testUserDetails.getUsername()).isEqualTo(UPDATED_USERNAME);
-        assertThat(testUserDetails.getPassword()).isEqualTo(UPDATED_PASSWORD);
         assertThat(testUserDetails.getPlatformUserName()).isEqualTo(UPDATED_PLATFORM_USER_NAME);
     }
 

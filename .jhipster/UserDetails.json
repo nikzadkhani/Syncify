@@ -2,14 +2,6 @@
     "name": "UserDetails",
     "fields": [
         {
-            "fieldName": "username",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "password",
-            "fieldType": "String"
-        },
-        {
             "fieldName": "platformUserName",
             "fieldType": "String"
         }

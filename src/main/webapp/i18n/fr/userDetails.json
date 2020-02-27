@@ -16,8 +16,6 @@
       "detail": {
         "title": "User Details"
       },
-      "username": "Username",
-      "password": "Password",
       "platformUserName": "Platform User Name",
       "playlist": "Playlist"
     }

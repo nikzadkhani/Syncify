@@ -15,12 +15,6 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="username" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="password" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="platform_user_name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -58,8 +52,6 @@
                   separator=";"
                   tableName="user_details">
             <column name="id" type="numeric"/>
-            <column name="username" type="string"/>
-            <column name="password" type="string"/>
             <column name="platform_user_name" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
