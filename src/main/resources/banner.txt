@@ -1,10 +1,22 @@
 
-  ${AnsiColor.GREEN}      ██╗${AnsiColor.RED} ██╗   ██╗ ████████╗ ███████╗   ██████╗ ████████╗ ████████╗ ███████╗
-  ${AnsiColor.GREEN}      ██║${AnsiColor.RED} ██║   ██║ ╚══██╔══╝ ██╔═══██╗ ██╔════╝ ╚══██╔══╝ ██╔═════╝ ██╔═══██╗
-  ${AnsiColor.GREEN}      ██║${AnsiColor.RED} ████████║    ██║    ███████╔╝ ╚█████╗     ██║    ██████╗   ███████╔╝
-  ${AnsiColor.GREEN}██╗   ██║${AnsiColor.RED} ██╔═══██║    ██║    ██╔════╝   ╚═══██╗    ██║    ██╔═══╝   ██╔══██║
-  ${AnsiColor.GREEN}╚██████╔╝${AnsiColor.RED} ██║   ██║ ████████╗ ██║       ██████╔╝    ██║    ████████╗ ██║  ╚██╗
-  ${AnsiColor.GREEN} ╚═════╝ ${AnsiColor.RED} ╚═╝   ╚═╝ ╚═══════╝ ╚═╝       ╚═════╝     ╚═╝    ╚═══════╝ ╚═╝   ╚═╝
 
-${AnsiColor.BRIGHT_BLUE}:: JHipster 🤓  :: Running Spring Boot ${spring-boot.version} ::
+
+${AnsiColor.GREEN}   SSSSSSSSSSSSSSS  ${AnsiColor.CYAN}YYYYYYY       YYYYYYYNNNNNNNN        NNNNNNNN        CCCCCCCCCCCCCIIIIIIIIIIFFFFFFFFFFFFFFFFFFFFFFYYYYYYY       YYYYYYY
+${AnsiColor.GREEN} SS:::::::::::::::S ${AnsiColor.CYAN}Y:::::Y       Y:::::YN:::::::N       N::::::N     CCC::::::::::::CI::::::::IF::::::::::::::::::::FY:::::Y       Y:::::Y
+${AnsiColor.GREEN}S:::::SSSSSS::::::S ${AnsiColor.CYAN}Y:::::Y       Y:::::YN::::::::N      N::::::N   CC:::::::::::::::CI::::::::IF::::::::::::::::::::FY:::::Y       Y:::::Y
+${AnsiColor.GREEN}S:::::S     SSSSSSS ${AnsiColor.CYAN}Y::::::Y     Y::::::YN:::::::::N     N::::::N  C:::::CCCCCCCC::::CII::::::IIFF::::::FFFFFFFFF::::FY::::::Y     Y::::::Y
+${AnsiColor.GREEN}S:::::S             ${AnsiColor.CYAN}YYY:::::Y   Y:::::YYYN::::::::::N    N::::::N C:::::C       CCCCCC  I::::I    F:::::F       FFFFFFYYY:::::Y   Y:::::YYY
+${AnsiColor.GREEN}S:::::S             ${AnsiColor.CYAN}   Y:::::Y Y:::::Y   N:::::::::::N   N::::::NC:::::C                I::::I    F:::::F                Y:::::Y Y:::::Y
+${AnsiColor.GREEN} S::::SSSS          ${AnsiColor.CYAN}    Y:::::Y:::::Y    N:::::::N::::N  N::::::NC:::::C                I::::I    F::::::FFFFFFFFFF       Y:::::Y:::::Y
+${AnsiColor.GREEN}  SS::::::SSSSS     ${AnsiColor.CYAN}     Y:::::::::Y     N::::::N N::::N N::::::NC:::::C                I::::I    F:::::::::::::::F        Y:::::::::Y
+${AnsiColor.GREEN}    SSS::::::::SS   ${AnsiColor.CYAN}      Y:::::::Y      N::::::N  N::::N:::::::NC:::::C                I::::I    F:::::::::::::::F         Y:::::::Y
+${AnsiColor.GREEN}       SSSSSS::::S  ${AnsiColor.CYAN}       Y:::::Y       N::::::N   N:::::::::::NC:::::C                I::::I    F::::::FFFFFFFFFF          Y:::::Y
+${AnsiColor.GREEN}            S:::::S ${AnsiColor.CYAN}       Y:::::Y       N::::::N    N::::::::::NC:::::C                I::::I    F:::::F                    Y:::::Y
+${AnsiColor.GREEN}            S:::::S ${AnsiColor.CYAN}       Y:::::Y       N::::::N     N:::::::::N C:::::C       CCCCCC  I::::I    F:::::F                    Y:::::Y
+${AnsiColor.GREEN}SSSSSSS     S:::::S ${AnsiColor.CYAN}       Y:::::Y       N::::::N      N::::::::N  C:::::CCCCCCCC::::CII::::::IIFF:::::::FF                  Y:::::Y
+${AnsiColor.GREEN}S::::::SSSSSS:::::S ${AnsiColor.CYAN}    YYYY:::::YYYY    N::::::N       N:::::::N   CC:::::::::::::::CI::::::::IF::::::::FF               YYYY:::::YYYY
+${AnsiColor.GREEN}S:::::::::::::::SS  ${AnsiColor.CYAN}    Y:::::::::::Y    N::::::N        N::::::N     CCC::::::::::::CI::::::::IF::::::::FF               Y:::::::::::Y
+${AnsiColor.GREEN} SSSSSSSSSSSSSSS    ${AnsiColor.CYAN}    YYYYYYYYYYYYY    NNNNNNNN         NNNNNNN        CCCCCCCCCCCCCIIIIIIIIIIFFFFFFFFFFF               YYYYYYYYYYYYY
+
+${AnsiColor.BRIGHT_BLUE}:: SYNCIFY 🤓  :: Running Spring Boot ${spring-boot.version} ::
 :: https://www.jhipster.tech ::${AnsiColor.DEFAULT}
