@@ -54,7 +54,8 @@
   ga('set', 'transport', 'beacon');
   ga('send', 'pageview');
   var spotifyApi = new SpotifyWebApi();
-  const accessToken = "BQCW6nbV8mCAnAvRELfWRkXnTxqlHRsK5VTTsyK_Yir1_1aBfmRV2E_2Kbgo2oMqXRHD19o7zytCnVpJN6Q"; // update token every hour
+  // Need to update token every hour! Use Postman (POST : https://accounts.spotify.com/api/token)
+  const accessToken = "BQDlNVEi-tfOnSL5mxS07ZWl-N8nJhnKQoRrYYQTurdOJT2uIKCgI4MNtk_8DSc1eQBxgSolyg59S79S14c";
   spotifyApi.setAccessToken(accessToken);
 
 
