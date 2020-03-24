@@ -1,0 +1,78 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+<!--[if IE]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade
+  your browser</a> to improve your experience and security.</p>
+<![endif]-->
+
+<!-- Add your site or application content here -->
+<section id="fetch">
+  <input type="text" placeholder="Enter a track name" id="term"/>
+  <button id="search" onclick="searchForTracks(document.getElementById('term').value)">Find tracks</button>
+</section>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Artist</th>
+  </tr>
+</table>
+<script src="js/vendor/modernizr-3.8.0.min.js"></script>
+<script src="js/vendor/spotify-web-api.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+<script src="js/plugins.js"></script>
+<script src="js/main.js"></script>
+<script src="https://www.google-analytics.com/analytics.js" async></script>
+<!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+<script>
+  window.ga = function () {
+    ga.q.push(arguments)
+  };
+  ga.q = [];
+  ga.l = +new Date;
+  ga('create', 'UA-XXXXX-Y', 'auto');
+  ga('set', 'transport', 'beacon');
+  ga('send', 'pageview');
+  var spotifyApi = new SpotifyWebApi();
+  const accessToken = "BQCW6nbV8mCAnAvRELfWRkXnTxqlHRsK5VTTsyK_Yir1_1aBfmRV2E_2Kbgo2oMqXRHD19o7zytCnVpJN6Q"; // update token every hour
+  spotifyApi.setAccessToken(accessToken);
+
+
+  const searchForTracks = trackName => {
+    spotifyApi.searchTracks(trackName)
+      // spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE')
+      .then(function (data) {
+        console.log(data.tracks.items[0])
+        for (const ele of data.tracks.items) {
+          const row = "<tr><td>" + ele.name + "</td><td>" + ele.artists[0].name + "</td></tr>"
+          $('table').append(row)
+        }
+      }, function (err) {
+        console.error(err);
+      });
+  }
+</script>
+
+</body>
+
+</html>
