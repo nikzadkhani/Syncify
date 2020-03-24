@@ -28,12 +28,13 @@
   <input type="text" placeholder="Enter a track name" id="term"/>
   <button id="search" onclick="searchForTracks(document.getElementById('term').value)">Find tracks</button>
 </section>
-<table>
+<table id="songList">
   <tr>
     <th>Name</th>
     <th>Artist</th>
   </tr>
 </table>
+
 <script src="js/vendor/modernizr-3.8.0.min.js"></script>
 <script src="js/vendor/spotify-web-api.js"></script>
 
@@ -55,7 +56,7 @@
   ga('send', 'pageview');
   var spotifyApi = new SpotifyWebApi();
   // Need to update token every hour! Use Postman (POST : https://accounts.spotify.com/api/token)
-  const accessToken = "BQDlNVEi-tfOnSL5mxS07ZWl-N8nJhnKQoRrYYQTurdOJT2uIKCgI4MNtk_8DSc1eQBxgSolyg59S79S14c";
+  const accessToken = "BQAIMmSMdsJt6D5KX2bM-Nz9e4EsQzGyfCodijq3QF9qSpXLzTZDqr8YHbl0YBYOXTRVecyK0BEb__02j-g";
   spotifyApi.setAccessToken(accessToken);
 
 
@@ -64,6 +65,9 @@
       // spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE')
       .then(function (data) {
         console.log(data.tracks.items[0])
+        // Really bad javascript below
+        document.getElementById("songList").outerHTML =
+        "<table id='songList'><tbody><tr><th>Name</th><th>Artist</th></tr></tbody></table>"
         for (const ele of data.tracks.items) {
           const row = "<tr><td>" + ele.name + "</td><td>" + ele.artists[0].name + "</td></tr>"
           $('table').append(row)
