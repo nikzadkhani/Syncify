@@ -14,7 +14,7 @@ public class AppleMusicServiceIT {
 
 
     @Autowired
-    private AppleMusicService appleMusicService;
+    private AppleMusic appleMusicService;
 
 
     @Test
@@ -24,6 +24,7 @@ public class AppleMusicServiceIT {
 
     @Test
     public void verifyWeCanConnectToAppleMusicApi(){
+        appleMusicService.connectToAppleMusicApli();
 
     }
 

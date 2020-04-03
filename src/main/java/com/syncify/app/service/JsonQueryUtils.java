@@ -6,7 +6,6 @@ import com.google.gson.JsonParser;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import javafx.scene.control.Alert;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.*;
@@ -35,6 +34,8 @@ public class JsonQueryUtils {
     private JsonObject jsonObject;
     //a Preferences object to store the token, avoiding repetitive calls
     private Preferences preferences = Preferences.userNodeForPackage(JsonQueryUtils.class);
+    private String keyId = "R7SQHMWJKU";
+    private String teamId = "A76HA22K75";
 
     public JsonQueryUtils() {
         this.responseCode = 0;
@@ -43,24 +44,25 @@ public class JsonQueryUtils {
     }
 
 
+
+
     private String getToken() throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         JsonParser parser = new JsonParser();
 
         String secret = null;
 
-        try {
-            JsonObject jsonObject = (JsonObject) parser.parse(new FileReader("/Users/equilibrium/IdeaProjects/AMCharts/api_key.json"));
-            secret = jsonObject.get("secret").getAsString();
+        secret="-----BEGIN PRIVATE KEY-----MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgVJrJRAoZI6S2UkwZA7EhHhKW5zSloouwue/Q3D4cyOmgCgYIKoZIzj0DAQehRANCAAQZyu0OBCN4XCY+4F/E0d+pqXJoLZ7hXbYSN4TMgiEjNnpeX0anKWMk8zeRmHfDa05waNKs5XAFQUyVr1X3PpvF-----END PRIVATE KEY-----";
+
+            //secret = "MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgVJrJRAoZI6S2UkwZ A7EhHhKW5zSloouwue/Q3D4cyOmgCgYIKoZIzj0DAQehRANCAAQZyu0OBCN4XCY+ 4F/E0d+pqXJoLZ7hXbYSN4TMgiEjNnpeX0anKWMk8zeRmHfDa05waNKs5XAFQUyV r1X3PpvF";
+
             System.out.println("secret key is: " + secret);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
 
         //The JWT signature algorithm we will be using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.ES256;
-        byte[] publicBytes = Base64.decodeBase64(secret);
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(publicBytes);
+        //byte[] publicBytes = Base64.decodeBase64(secret);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(secret.getBytes("utf-8"));
         KeyFactory keyFactory = KeyFactory.getInstance("EC");
         PrivateKey prvKey = keyFactory.generatePrivate(keySpec);
         ECPrivateKey eckey = (ECPrivateKey)prvKey;
@@ -83,10 +85,10 @@ public class JsonQueryUtils {
         JwtBuilder builder = Jwts.builder()
             .setIssuedAt(now)
             .setHeaderParam("alg","ES256")
-            .setHeaderParam("kid","B93K9Z88NU")
+            .setHeaderParam("kid",keyId)
             .setExpiration(expiry)
-            .setIssuer("B68385H95A")
-            .signWith(signatureAlgorithm, eckey);
+            .setIssuer(teamId)
+            .signWith( keyFactory.generatePrivate(secret), signatureAlgorithm);
 
 
 
@@ -157,11 +159,8 @@ public class JsonQueryUtils {
             }
 
             if (this.responseCode != 200) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning!");
-                alert.setContentText("An error has occured. Rate limit probably reached");
-                alert.showAndWait();
-                //return null;
+                return null;
+
             }
 
             in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));

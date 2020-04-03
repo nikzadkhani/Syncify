@@ -20,11 +20,20 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class AppleMusicService {
+public class AppleMusic {
 
-    private final Logger log = LoggerFactory.getLogger(AuditEventService.class);
+    private final Logger log = LoggerFactory.getLogger(AppleMusic.class);
 
     //private final JHipsterProperties jHipsterProperties;
+
+    public void connectToAppleMusicApli(){
+        JsonQueryUtils jsonQueryUtils = new JsonQueryUtils();
+        try {
+            jsonQueryUtils.getJson("https://api.music.apple.com/v1/catalog/us/playlists/pl.14362d3dfe4b41f7878939782647e0ba");
+        }catch(Exception e){
+            throw new RuntimeException("could not get security key or connect to apple");
+        }
+    }
 
 
 
