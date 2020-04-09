@@ -1,25 +1,22 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="playlist">
-            <h2><span jhiTranslate="syncifyApp.playlist.detail.title">Playlist</span> {{ playlist.id }}</h2>
-
+            <h2><span>Playlist</span> {{playlist.id}}</h2>
             <hr>
-
             <jhi-alert-error></jhi-alert-error>
-
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="syncifyApp.playlist.name">Name</span></dt>
+                <dt><span>Name</span></dt>
                 <dd>
-                    <span>{{ playlist.name }}</span>
+                    <span>{{playlist.name}}</span>
                 </dd>
-                <dt><span jhiTranslate="syncifyApp.playlist.author">Author</span></dt>
+                <dt><span>Author</span></dt>
                 <dd>
-                    <span>{{ playlist.author }}</span>
+                    <span>{{playlist.author}}</span>
                 </dd>
-                <dt><span jhiTranslate="syncifyApp.playlist.song">Song</span></dt>
+                <dt><span>Song</span></dt>
                 <dd>
                     <div *ngIf="playlist.song">
-                        <a [routerLink]="['/song', playlist.song?.id, 'view']">{{ playlist.song?.id }}</a>
+                        <a [routerLink]="['/song', playlist.song?.id, 'view']">{{playlist.song?.id}}</a>
                     </div>
                 </dd>
             </dl>
@@ -27,13 +24,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/playlist', playlist.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
             </button>
         </div>
     </div>

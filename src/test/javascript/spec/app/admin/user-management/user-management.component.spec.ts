@@ -1,29 +1,28 @@
 import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
+import { Observable, of } from 'rxjs';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { of } from 'rxjs';
 
 import { SyncifyTestModule } from '../../../test.module';
-import { UserManagementComponent } from 'app/admin/user-management/user-management.component';
-import { UserService } from 'app/core/user/user.service';
-import { User } from 'app/core/user/user.model';
+import { UserMgmtComponent } from 'app/admin/user-management/user-management.component';
+import { UserService, User } from 'app/core';
 
 describe('Component Tests', () => {
   describe('User Management Component', () => {
-    let comp: UserManagementComponent;
-    let fixture: ComponentFixture<UserManagementComponent>;
+    let comp: UserMgmtComponent;
+    let fixture: ComponentFixture<UserMgmtComponent>;
     let service: UserService;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [SyncifyTestModule],
-        declarations: [UserManagementComponent]
+        declarations: [UserMgmtComponent]
       })
-        .overrideTemplate(UserManagementComponent, '')
+        .overrideTemplate(UserMgmtComponent, '')
         .compileComponents();
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(UserManagementComponent);
+      fixture = TestBed.createComponent(UserMgmtComponent);
       comp = fixture.componentInstance;
       service = fixture.debugElement.injector.get(UserService);
     });
@@ -49,7 +48,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(service.query).toHaveBeenCalled();
-          expect(comp.users && comp.users[0]).toEqual(jasmine.objectContaining({ id: 123 }));
+          expect(comp.users[0]).toEqual(jasmine.objectContaining({ id: 123 }));
         })
       ));
     });
@@ -76,9 +75,9 @@ describe('Component Tests', () => {
           tick(); // simulate async
 
           // THEN
-          expect(service.update).toHaveBeenCalledWith({ ...user, activated: true });
+          expect(service.update).toHaveBeenCalledWith(user);
           expect(service.query).toHaveBeenCalled();
-          expect(comp.users && comp.users[0]).toEqual(jasmine.objectContaining({ id: 123 }));
+          expect(comp.users[0]).toEqual(jasmine.objectContaining({ id: 123 }));
         })
       ));
     });

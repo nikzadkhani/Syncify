@@ -51,10 +51,10 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     },
     module: {
         rules: [{
-            test: /\.(j|t)s$/,
+            test: /\.ts$/,
             enforce: 'pre',
-            loader: 'eslint-loader',
-            exclude: /node_modules/
+            loader: 'tslint-loader',
+            exclude: [/(node_modules)/, new RegExp('reflect-metadata\\' + path.sep + 'Reflect\\.ts')]
         },
         {
             test: /\.ts$/,
@@ -63,7 +63,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
                 {
                     loader: 'cache-loader',
                     options: {
-                        cacheDirectory: path.resolve('target/cache-loader')
+                      cacheDirectory: path.resolve('target/cache-loader')
                     }
                 },
                 {
@@ -81,13 +81,14 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
                         transpileOnly: true,
                         happyPackMode: true
                     }
-                }
+                },
+                'angular-router-loader'
             ],
             exclude: /(node_modules)/
         },
         {
             test: /\.scss$/,
-            use: ['to-string-loader', 'css-loader', 'postcss-loader', {
+            use: ['to-string-loader', 'css-loader', {
                 loader: 'sass-loader',
                 options: { implementation: sass }
             }],

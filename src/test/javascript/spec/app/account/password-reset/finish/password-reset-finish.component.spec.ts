@@ -1,8 +1,8 @@
-import { ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
+import { Observable, of, throwError } from 'rxjs';
+import { Renderer, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { of, throwError } from 'rxjs';
 
 import { SyncifyTestModule } from '../../../../test.module';
 import { PasswordResetFinishComponent } from 'app/account/password-reset/finish/password-reset-finish.component';
@@ -23,6 +23,16 @@ describe('Component Tests', () => {
           {
             provide: ActivatedRoute,
             useValue: new MockActivatedRoute({ key: 'XYZPDQ' })
+          },
+          {
+            provide: Renderer,
+            useValue: {
+              invokeElementMethod(renderElement: any, methodName: string, args?: any[]) {}
+            }
+          },
+          {
+            provide: ElementRef,
+            useValue: new ElementRef(null)
           }
         ]
       })
@@ -37,21 +47,27 @@ describe('Component Tests', () => {
     });
 
     it('should define its initial state', () => {
-      expect(comp.initialized).toBe(true);
+      comp.ngOnInit();
+
+      expect(comp.keyMissing).toBeFalsy();
       expect(comp.key).toEqual('XYZPDQ');
     });
 
-    it('sets focus after the view has been initialized', () => {
+    it('sets focus after the view has been initialized', inject([ElementRef], (elementRef: ElementRef) => {
+      const element = fixture.nativeElement;
       const node = {
-        focus(): void {}
+        focus() {}
       };
-      comp.newPassword = new ElementRef(node);
+
+      elementRef.nativeElement = element;
+      spyOn(element, 'querySelector').and.returnValue(node);
       spyOn(node, 'focus');
 
       comp.ngAfterViewInit();
 
+      expect(element.querySelector).toHaveBeenCalledWith('#password');
       expect(node.focus).toHaveBeenCalled();
-    });
+    }));
 
     it('should ensure the two passwords entered match', () => {
       comp.passwordForm.patchValue({
@@ -61,10 +77,10 @@ describe('Component Tests', () => {
 
       comp.finishReset();
 
-      expect(comp.doNotMatch).toBe(true);
+      expect(comp.doNotMatch).toEqual('ERROR');
     });
 
-    it('should update success to true after resetting password', inject(
+    it('should update success to OK after resetting password', inject(
       [PasswordResetFinishService],
       fakeAsync((service: PasswordResetFinishService) => {
         spyOn(service, 'save').and.returnValue(of({}));
@@ -76,8 +92,11 @@ describe('Component Tests', () => {
         comp.finishReset();
         tick();
 
-        expect(service.save).toHaveBeenCalledWith('XYZPDQ', 'password');
-        expect(comp.success).toBe(true);
+        expect(service.save).toHaveBeenCalledWith({
+          key: 'XYZPDQ',
+          newPassword: 'password'
+        });
+        expect(comp.success).toEqual('OK');
       })
     ));
 
@@ -93,9 +112,12 @@ describe('Component Tests', () => {
         comp.finishReset();
         tick();
 
-        expect(service.save).toHaveBeenCalledWith('XYZPDQ', 'password');
-        expect(comp.success).toBe(false);
-        expect(comp.error).toBe(true);
+        expect(service.save).toHaveBeenCalledWith({
+          key: 'XYZPDQ',
+          newPassword: 'password'
+        });
+        expect(comp.success).toBeNull();
+        expect(comp.error).toEqual('ERROR');
       })
     ));
   });

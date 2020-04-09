@@ -1,29 +1,39 @@
-import Spy = jasmine.Spy;
 import { of } from 'rxjs';
 
 import { SpyObject } from './spyobject';
 import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/user/account.model';
+import Spy = jasmine.Spy;
 
 export class MockAccountService extends SpyObject {
   getSpy: Spy;
   saveSpy: Spy;
-  authenticateSpy: Spy;
+  fakeResponse: any;
   identitySpy: Spy;
   getAuthenticationStateSpy: Spy;
 
   constructor() {
     super(AccountService);
 
+    this.fakeResponse = null;
     this.getSpy = this.spy('get').andReturn(this);
     this.saveSpy = this.spy('save').andReturn(this);
-    this.authenticateSpy = this.spy('authenticate').andReturn(this);
-    this.identitySpy = this.spy('identity').andReturn(of(null));
-    this.getAuthenticationStateSpy = this.spy('getAuthenticationState').andReturn(of(null));
+    this.setIdentitySpy({});
   }
 
-  setIdentityResponse(account: Account | null): void {
-    this.identitySpy = this.spy('identity').andReturn(of(account));
-    this.getAuthenticationStateSpy = this.spy('getAuthenticationState').andReturn(of(account));
+  subscribe(callback: any) {
+    callback(this.fakeResponse);
+  }
+
+  setResponse(json: any): void {
+    this.fakeResponse = json;
+  }
+
+  setIdentitySpy(json: any): any {
+    this.identitySpy = this.spy('identity').andReturn(Promise.resolve(json));
+  }
+
+  setIdentityResponse(json: any): void {
+    this.setIdentitySpy(json);
+    this.getAuthenticationStateSpy = this.spy('getAuthenticationState').andReturn(of(json));
   }
 }

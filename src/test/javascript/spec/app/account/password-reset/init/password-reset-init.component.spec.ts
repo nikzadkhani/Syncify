@@ -1,11 +1,12 @@
-import { ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { Renderer, ElementRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { of, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 
 import { SyncifyTestModule } from '../../../../test.module';
 import { PasswordResetInitComponent } from 'app/account/password-reset/init/password-reset-init.component';
 import { PasswordResetInitService } from 'app/account/password-reset/init/password-reset-init.service';
+import { EMAIL_NOT_FOUND_TYPE } from 'app/shared';
 
 describe('Component Tests', () => {
   describe('PasswordResetInitComponent', () => {
@@ -16,24 +17,46 @@ describe('Component Tests', () => {
       fixture = TestBed.configureTestingModule({
         imports: [SyncifyTestModule],
         declarations: [PasswordResetInitComponent],
-        providers: [FormBuilder]
+        providers: [
+          FormBuilder,
+          {
+            provide: Renderer,
+            useValue: {
+              invokeElementMethod(renderElement: any, methodName: string, args?: any[]) {}
+            }
+          },
+          {
+            provide: ElementRef,
+            useValue: new ElementRef(null)
+          }
+        ]
       })
         .overrideTemplate(PasswordResetInitComponent, '')
         .createComponent(PasswordResetInitComponent);
       comp = fixture.componentInstance;
     });
 
-    it('sets focus after the view has been initialized', () => {
+    it('should define its initial state', () => {
+      expect(comp.success).toBeUndefined();
+      expect(comp.error).toBeUndefined();
+      expect(comp.errorEmailNotExists).toBeUndefined();
+    });
+
+    it('sets focus after the view has been initialized', inject([ElementRef], (elementRef: ElementRef) => {
+      const element = fixture.nativeElement;
       const node = {
-        focus(): void {}
+        focus() {}
       };
-      comp.email = new ElementRef(node);
+
+      elementRef.nativeElement = element;
+      spyOn(element, 'querySelector').and.returnValue(node);
       spyOn(node, 'focus');
 
       comp.ngAfterViewInit();
 
+      expect(element.querySelector).toHaveBeenCalledWith('#email');
       expect(node.focus).toHaveBeenCalled();
-    });
+    }));
 
     it('notifies of success upon successful requestReset', inject([PasswordResetInitService], (service: PasswordResetInitService) => {
       spyOn(service, 'save').and.returnValue(of({}));
@@ -44,10 +67,33 @@ describe('Component Tests', () => {
       comp.requestReset();
 
       expect(service.save).toHaveBeenCalledWith('user@domain.com');
-      expect(comp.success).toBe(true);
+      expect(comp.success).toEqual('OK');
+      expect(comp.error).toBeNull();
+      expect(comp.errorEmailNotExists).toBeNull();
     }));
 
-    it('no notification of success upon error response', inject([PasswordResetInitService], (service: PasswordResetInitService) => {
+    it('notifies of unknown email upon email address not registered/400', inject(
+      [PasswordResetInitService],
+      (service: PasswordResetInitService) => {
+        spyOn(service, 'save').and.returnValue(
+          throwError({
+            status: 400,
+            error: { type: EMAIL_NOT_FOUND_TYPE }
+          })
+        );
+        comp.resetRequestForm.patchValue({
+          email: 'user@domain.com'
+        });
+        comp.requestReset();
+
+        expect(service.save).toHaveBeenCalledWith('user@domain.com');
+        expect(comp.success).toBeNull();
+        expect(comp.error).toBeNull();
+        expect(comp.errorEmailNotExists).toEqual('ERROR');
+      }
+    ));
+
+    it('notifies of error upon error response', inject([PasswordResetInitService], (service: PasswordResetInitService) => {
       spyOn(service, 'save').and.returnValue(
         throwError({
           status: 503,
@@ -60,7 +106,9 @@ describe('Component Tests', () => {
       comp.requestReset();
 
       expect(service.save).toHaveBeenCalledWith('user@domain.com');
-      expect(comp.success).toBe(false);
+      expect(comp.success).toBeNull();
+      expect(comp.errorEmailNotExists).toBeNull();
+      expect(comp.error).toEqual('ERROR');
     }));
   });
 });

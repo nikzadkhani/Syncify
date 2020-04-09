@@ -1,32 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { Observable, of, EMPTY } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
-
-import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IPlaylist, Playlist } from 'app/shared/model/playlist.model';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
+import { UserRouteAccessService } from 'app/core';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { Playlist } from 'app/shared/model/playlist.model';
 import { PlaylistService } from './playlist.service';
 import { PlaylistComponent } from './playlist.component';
 import { PlaylistDetailComponent } from './playlist-detail.component';
 import { PlaylistUpdateComponent } from './playlist-update.component';
+import { PlaylistDeletePopupComponent } from './playlist-delete-dialog.component';
+import { IPlaylist } from 'app/shared/model/playlist.model';
 
 @Injectable({ providedIn: 'root' })
 export class PlaylistResolve implements Resolve<IPlaylist> {
-  constructor(private service: PlaylistService, private router: Router) {}
+  constructor(private service: PlaylistService) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IPlaylist> | Observable<never> {
-    const id = route.params['id'];
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IPlaylist> {
+    const id = route.params['id'] ? route.params['id'] : null;
     if (id) {
       return this.service.find(id).pipe(
-        flatMap((playlist: HttpResponse<Playlist>) => {
-          if (playlist.body) {
-            return of(playlist.body);
-          } else {
-            this.router.navigate(['404']);
-            return EMPTY;
-          }
-        })
+        filter((response: HttpResponse<Playlist>) => response.ok),
+        map((playlist: HttpResponse<Playlist>) => playlist.body)
       );
     }
     return of(new Playlist());
@@ -39,7 +34,7 @@ export const playlistRoute: Routes = [
     component: PlaylistComponent,
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'syncifyApp.playlist.home.title'
+      pageTitle: 'Playlists'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -51,7 +46,7 @@ export const playlistRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'syncifyApp.playlist.home.title'
+      pageTitle: 'Playlists'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -63,7 +58,7 @@ export const playlistRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'syncifyApp.playlist.home.title'
+      pageTitle: 'Playlists'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -75,8 +70,24 @@ export const playlistRoute: Routes = [
     },
     data: {
       authorities: ['ROLE_USER'],
-      pageTitle: 'syncifyApp.playlist.home.title'
+      pageTitle: 'Playlists'
     },
     canActivate: [UserRouteAccessService]
+  }
+];
+
+export const playlistPopupRoute: Routes = [
+  {
+    path: ':id/delete',
+    component: PlaylistDeletePopupComponent,
+    resolve: {
+      playlist: PlaylistResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'Playlists'
+    },
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
   }
 ];

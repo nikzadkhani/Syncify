@@ -1,22 +1,21 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { SyncifyTestModule } from '../../../test.module';
-import { AlertErrorComponent } from 'app/shared/alert/alert-error.component';
+import { JhiAlertErrorComponent } from 'app/shared/alert/alert-error.component';
 import { MockAlertService } from '../../../helpers/mock-alert.service';
 
 describe('Component Tests', () => {
   describe('Alert Error Component', () => {
-    let comp: AlertErrorComponent;
-    let fixture: ComponentFixture<AlertErrorComponent>;
+    let comp: JhiAlertErrorComponent;
+    let fixture: ComponentFixture<JhiAlertErrorComponent>;
     let eventManager: JhiEventManager;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [SyncifyTestModule, TranslateModule.forRoot()],
-        declarations: [AlertErrorComponent],
+        imports: [SyncifyTestModule],
+        declarations: [JhiAlertErrorComponent],
         providers: [
           JhiEventManager,
           {
@@ -25,12 +24,12 @@ describe('Component Tests', () => {
           }
         ]
       })
-        .overrideTemplate(AlertErrorComponent, '')
+        .overrideTemplate(JhiAlertErrorComponent, '')
         .compileComponents();
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(AlertErrorComponent);
+      fixture = TestBed.createComponent(JhiAlertErrorComponent);
       comp = fixture.componentInstance;
       eventManager = fixture.debugElement.injector.get(JhiEventManager);
     });
@@ -41,17 +40,15 @@ describe('Component Tests', () => {
         eventManager.broadcast({ name: 'syncifyApp.httpError', content: { status: 0 } });
         // THEN
         expect(comp.alerts.length).toBe(1);
-        expect(comp.alerts[0].msg).toBe('error.server.not.reachable');
+        expect(comp.alerts[0].msg).toBe('Server not reachable');
       });
-
       it('Should display an alert on status 404', () => {
         // GIVEN
         eventManager.broadcast({ name: 'syncifyApp.httpError', content: { status: 404 } });
         // THEN
         expect(comp.alerts.length).toBe(1);
-        expect(comp.alerts[0].msg).toBe('error.url.not.found');
+        expect(comp.alerts[0].msg).toBe('Not found');
       });
-
       it('Should display an alert on generic error', () => {
         // GIVEN
         eventManager.broadcast({ name: 'syncifyApp.httpError', content: { error: { message: 'Error Message' } } });
@@ -61,7 +58,6 @@ describe('Component Tests', () => {
         expect(comp.alerts[0].msg).toBe('Error Message');
         expect(comp.alerts[1].msg).toBe('Second Error Message');
       });
-
       it('Should display an alert on status 400 for generic error', () => {
         // GIVEN
         const response = new HttpErrorResponse({
@@ -82,7 +78,6 @@ describe('Component Tests', () => {
         expect(comp.alerts.length).toBe(1);
         expect(comp.alerts[0].msg).toBe('error.validation');
       });
-
       it('Should display an alert on status 400 for generic error without message', () => {
         // GIVEN
         const response = new HttpErrorResponse({
@@ -96,7 +91,6 @@ describe('Component Tests', () => {
         expect(comp.alerts.length).toBe(1);
         expect(comp.alerts[0].msg).toBe('Bad Request');
       });
-
       it('Should display an alert on status 400 for invalid parameters', () => {
         // GIVEN
         const response = new HttpErrorResponse({
@@ -116,9 +110,8 @@ describe('Component Tests', () => {
         eventManager.broadcast({ name: 'syncifyApp.httpError', content: response });
         // THEN
         expect(comp.alerts.length).toBe(1);
-        expect(comp.alerts[0].msg).toBe('error.Size');
+        expect(comp.alerts[0].msg).toBe('Error on field "MinField"');
       });
-
       it('Should display an alert on status 400 for error headers', () => {
         // GIVEN
         const response = new HttpErrorResponse({

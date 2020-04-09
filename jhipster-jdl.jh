@@ -1,5 +1,5 @@
 entity Song{
-	id UUID,
+        id UUID,
     artist String,
     name String,
     spotifyId String,
@@ -7,23 +7,22 @@ entity Song{
 }
 
 entity Playlist{
-	id UUID,
-	name String,
+        id UUID,
+        name String,
     author String
 }
 
 entity UserDetails{
-	id UUID,
+        id UUID,
     platformUserName String,
-  
-	
+
+
 }
 
 relationship OneToMany{
-	Song{playlist} to Playlist{song}
+        Song{playlist} to Playlist{song}
 }
 
 relationship ManyToMany{
-	UserDetails{playlist} to Playlist{user}
+        UserDetails{playlist} to Playlist{user}
 }
-

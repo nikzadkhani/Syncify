@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MergeJsonWebpackPlugin = require("merge-jsons-webpack-plugin");
+const rxPaths = require('rxjs/_esm5/path-mapping');
 
 const utils = require('./utils.js');
 
@@ -10,8 +10,10 @@ module.exports = (options) => ({
     resolve: {
         extensions: ['.ts', '.js'],
         modules: ['node_modules'],
-        mainFields: [ 'es2015', 'browser', 'module', 'main'],
-        alias: utils.mapTypescriptAliasToWebpackAlias()
+        alias: {
+            app: utils.root('src/main/webapp/app/'),
+            ...rxPaths()
+        }
     },
     stats: {
         children: false
@@ -55,8 +57,7 @@ module.exports = (options) => ({
             'process.env': {
                 NODE_ENV: `'${options.env}'`,
                 BUILD_TIMESTAMP: `'${new Date().getTime()}'`,
-                // APP_VERSION is passed as an environment variable from the Gradle / Maven build tasks.
-                VERSION: `'${process.env.hasOwnProperty('APP_VERSION') ? process.env.APP_VERSION : 'DEV'}'`,
+                VERSION: `'${utils.parseVersion()}'`,
                 DEBUG_INFO_ENABLED: options.env === 'development',
                 // The root URL for API calls, ending with a '/' - for example: `"https://www.jhipster.tech:8081/myservice/"`.
                 // If this URL is left empty (""), then it will be relative to the current context.
@@ -66,8 +67,9 @@ module.exports = (options) => ({
             }
         }),
         new CopyWebpackPlugin([
-            { from: './node_modules/swagger-ui-dist/*.{js,css,html,png}', to: 'swagger-ui', flatten: true, ignore: ['index.html'] },
-            { from: './node_modules/axios/dist/axios.min.js', to: 'swagger-ui' },
+            { from: './node_modules/swagger-ui/dist/css', to: 'swagger-ui/dist/css' },
+            { from: './node_modules/swagger-ui/dist/lib', to: 'swagger-ui/dist/lib' },
+            { from: './node_modules/swagger-ui/dist/swagger-ui.min.js', to: 'swagger-ui/dist/swagger-ui.min.js' },
             { from: './src/main/webapp/swagger-ui/', to: 'swagger-ui' },
             { from: './src/main/webapp/content/', to: 'content' },
             { from: './src/main/webapp/favicon.ico', to: 'favicon.ico' },
@@ -75,18 +77,6 @@ module.exports = (options) => ({
             // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
             { from: './src/main/webapp/robots.txt', to: 'robots.txt' }
         ]),
-        new MergeJsonWebpackPlugin({
-            output: {
-                groupBy: [
-                    { pattern: "./src/main/webapp/i18n/en/*.json", fileName: "./i18n/en.json" },
-                    { pattern: "./src/main/webapp/i18n/nl/*.json", fileName: "./i18n/nl.json" },
-                    { pattern: "./src/main/webapp/i18n/fa/*.json", fileName: "./i18n/fa.json" },
-                    { pattern: "./src/main/webapp/i18n/fr/*.json", fileName: "./i18n/fr.json" },
-                    { pattern: "./src/main/webapp/i18n/es/*.json", fileName: "./i18n/es.json" }
-                    // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in this array
-                ]
-            }
-        }),
         new HtmlWebpackPlugin({
             template: './src/main/webapp/index.html',
             chunks: ['polyfills', 'main', 'global'],

@@ -8,15 +8,17 @@ import { ISong } from 'app/shared/model/song.model';
   templateUrl: './song-detail.component.html'
 })
 export class SongDetailComponent implements OnInit {
-  song: ISong | null = null;
+  song: ISong;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ song }) => (this.song = song));
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ song }) => {
+      this.song = song;
+    });
   }
 
-  previousState(): void {
+  previousState() {
     window.history.back();
   }
 }

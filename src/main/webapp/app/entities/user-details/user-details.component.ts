@@ -1,53 +1,65 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { filter, map } from 'rxjs/operators';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { IUserDetails } from 'app/shared/model/user-details.model';
+import { AccountService } from 'app/core';
 import { UserDetailsService } from './user-details.service';
-import { UserDetailsDeleteDialogComponent } from './user-details-delete-dialog.component';
 
 @Component({
   selector: 'jhi-user-details',
   templateUrl: './user-details.component.html'
 })
 export class UserDetailsComponent implements OnInit, OnDestroy {
-  userDetails?: IUserDetails[];
-  eventSubscriber?: Subscription;
+  userDetails: IUserDetails[];
+  currentAccount: any;
+  eventSubscriber: Subscription;
 
   constructor(
     protected userDetailsService: UserDetailsService,
+    protected jhiAlertService: JhiAlertService,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected accountService: AccountService
   ) {}
 
-  loadAll(): void {
-    this.userDetailsService.query().subscribe((res: HttpResponse<IUserDetails[]>) => (this.userDetails = res.body || []));
+  loadAll() {
+    this.userDetailsService
+      .query()
+      .pipe(
+        filter((res: HttpResponse<IUserDetails[]>) => res.ok),
+        map((res: HttpResponse<IUserDetails[]>) => res.body)
+      )
+      .subscribe(
+        (res: IUserDetails[]) => {
+          this.userDetails = res;
+        },
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loadAll();
+    this.accountService.identity().then(account => {
+      this.currentAccount = account;
+    });
     this.registerChangeInUserDetails();
   }
 
-  ngOnDestroy(): void {
-    if (this.eventSubscriber) {
-      this.eventManager.destroy(this.eventSubscriber);
-    }
+  ngOnDestroy() {
+    this.eventManager.destroy(this.eventSubscriber);
   }
 
-  trackId(index: number, item: IUserDetails): number {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    return item.id!;
+  trackId(index: number, item: IUserDetails) {
+    return item.id;
   }
 
-  registerChangeInUserDetails(): void {
-    this.eventSubscriber = this.eventManager.subscribe('userDetailsListModification', () => this.loadAll());
+  registerChangeInUserDetails() {
+    this.eventSubscriber = this.eventManager.subscribe('userDetailsListModification', response => this.loadAll());
   }
 
-  delete(userDetails: IUserDetails): void {
-    const modalRef = this.modalService.open(UserDetailsDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.userDetails = userDetails;
+  protected onError(errorMessage: string) {
+    this.jhiAlertService.error(errorMessage, null, null);
   }
 }

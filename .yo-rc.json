@@ -1,17 +1,16 @@
 {
   "generator-jhipster": {
     "promptValues": {
-      "packageName": "com.syncify.app",
-      "nativeLanguage": "en"
+      "packageName": "syncify.app"
     },
-    "jhipsterVersion": "6.7.1",
+    "jhipsterVersion": "6.1.2",
     "applicationType": "monolith",
     "baseName": "Syncify",
-    "packageName": "com.syncify.app",
-    "packageFolder": "com/syncify/app",
+    "packageName": "syncify.app",
+    "packageFolder": "syncify/app",
     "serverPort": "8080",
     "authenticationType": "jwt",
-    "cacheProvider": "caffeine",
+    "cacheProvider": "ehcache",
     "enableHibernateCache": true,
     "websocket": false,
     "databaseType": "sql",
@@ -22,22 +21,17 @@
     "serviceDiscoveryType": "eureka",
     "buildTool": "maven",
     "enableSwaggerCodegen": false,
-    "jwtSecretKey": "MzhkOGYwYjkzNjA0YWY5ODQ5ZDRjMmU0OTcyZjFjOTE1OWQ1YzEzZjkzMjQzNmQwMzZmOGY2YjcwODJmOTE5MGEwODg2NGRkNmY5ZmZmZmNjM2FhMzQ5Zjg2MDhjYTE3ZWY4YzU5NDkwMGM2ZGRlMTNmODhlNWNmOGQ5OGY1M2E=",
-    "embeddableLaunchScript": false,
+    "jwtSecretKey": "YzA0NjVmYmVmNTllZTNhM2M1ZjlhNmFmZjkwNWIxMzUyZDI3M2JhNzVjNGVjNjhmMGMxNjlhZmZkYTg0ZGRmMThmYWE2YWFkMGZhNzdlMjg1ODYyN2Q0ZTFjZTgxOWQ1ZDg4MDBiMjc5NTdiNzg2MDUyYWRlOWUxMmJkMjNmZWY=",
     "useSass": true,
     "clientPackageManager": "npm",
     "clientFramework": "angularX",
     "clientTheme": "materia",
     "clientThemeVariant": "dark",
-    "creationTimestamp": 1582307164505,
     "testFrameworks": [],
     "jhiPrefix": "jhi",
     "entitySuffix": "",
     "dtoSuffix": "DTO",
     "otherModules": [],
-    "enableTranslation": true,
-    "nativeLanguage": "en",
-    "languages": ["en", "nl", "fa", "fr", "es"],
-    "blueprints": []
+    "enableTranslation": false
   }
 }

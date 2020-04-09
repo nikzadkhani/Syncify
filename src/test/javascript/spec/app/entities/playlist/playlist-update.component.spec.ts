@@ -1,7 +1,8 @@
+/* tslint:disable max-line-length */
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { SyncifyTestModule } from '../../../test.module';
 import { PlaylistUpdateComponent } from 'app/entities/playlist/playlist-update.component';

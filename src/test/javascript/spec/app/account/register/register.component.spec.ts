@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed, async, inject, tick, fakeAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { of, throwError } from 'rxjs';
-import { JhiLanguageService } from 'ng-jhipster';
+import { Observable, of, throwError } from 'rxjs';
 
-import { MockLanguageService } from '../../../helpers/mock-language.service';
 import { SyncifyTestModule } from '../../../test.module';
-import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared/constants/error.constants';
-import { RegisterService } from 'app/account/register/register.service';
+import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared';
+import { Register } from 'app/account/register/register.service';
 import { RegisterComponent } from 'app/account/register/register.component';
 
 describe('Component Tests', () => {
@@ -27,6 +25,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(RegisterComponent);
       comp = fixture.componentInstance;
+      comp.ngOnInit();
     });
 
     it('should ensure the two passwords entered match', () => {
@@ -37,12 +36,12 @@ describe('Component Tests', () => {
 
       comp.register();
 
-      expect(comp.doNotMatch).toBe(true);
+      expect(comp.doNotMatch).toEqual('ERROR');
     });
 
-    it('should update success to true after creating an account', inject(
-      [RegisterService, JhiLanguageService],
-      fakeAsync((service: RegisterService, mockTranslate: MockLanguageService) => {
+    it('should update success to OK after creating an account', inject(
+      [Register],
+      fakeAsync((service: Register) => {
         spyOn(service, 'save').and.returnValue(of({}));
         comp.registerForm.patchValue({
           password: 'password',
@@ -58,17 +57,16 @@ describe('Component Tests', () => {
           login: '',
           langKey: 'en'
         });
-        expect(comp.success).toBe(true);
-        expect(mockTranslate.getCurrentLanguageSpy).toHaveBeenCalled();
-        expect(comp.errorUserExists).toBe(false);
-        expect(comp.errorEmailExists).toBe(false);
-        expect(comp.error).toBe(false);
+        expect(comp.success).toEqual(true);
+        expect(comp.errorUserExists).toBeNull();
+        expect(comp.errorEmailExists).toBeNull();
+        expect(comp.error).toBeNull();
       })
     ));
 
     it('should notify of user existence upon 400/login already in use', inject(
-      [RegisterService],
-      fakeAsync((service: RegisterService) => {
+      [Register],
+      fakeAsync((service: Register) => {
         spyOn(service, 'save').and.returnValue(
           throwError({
             status: 400,
@@ -83,15 +81,15 @@ describe('Component Tests', () => {
         comp.register();
         tick();
 
-        expect(comp.errorUserExists).toBe(true);
-        expect(comp.errorEmailExists).toBe(false);
-        expect(comp.error).toBe(false);
+        expect(comp.errorUserExists).toEqual('ERROR');
+        expect(comp.errorEmailExists).toBeNull();
+        expect(comp.error).toBeNull();
       })
     ));
 
     it('should notify of email existence upon 400/email address already in use', inject(
-      [RegisterService],
-      fakeAsync((service: RegisterService) => {
+      [Register],
+      fakeAsync((service: Register) => {
         spyOn(service, 'save').and.returnValue(
           throwError({
             status: 400,
@@ -106,15 +104,15 @@ describe('Component Tests', () => {
         comp.register();
         tick();
 
-        expect(comp.errorEmailExists).toBe(true);
-        expect(comp.errorUserExists).toBe(false);
-        expect(comp.error).toBe(false);
+        expect(comp.errorEmailExists).toEqual('ERROR');
+        expect(comp.errorUserExists).toBeNull();
+        expect(comp.error).toBeNull();
       })
     ));
 
     it('should notify of generic error', inject(
-      [RegisterService],
-      fakeAsync((service: RegisterService) => {
+      [Register],
+      fakeAsync((service: Register) => {
         spyOn(service, 'save').and.returnValue(
           throwError({
             status: 503
@@ -128,9 +126,9 @@ describe('Component Tests', () => {
         comp.register();
         tick();
 
-        expect(comp.errorUserExists).toBe(false);
-        expect(comp.errorEmailExists).toBe(false);
-        expect(comp.error).toBe(true);
+        expect(comp.errorUserExists).toBeNull();
+        expect(comp.errorEmailExists).toBeNull();
+        expect(comp.error).toEqual('ERROR');
       })
     ));
   });

@@ -1,25 +1,23 @@
-import { Component, AfterViewInit, Renderer, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Renderer, ElementRef } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
-import { JhiLanguageService } from 'ng-jhipster';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared/constants/error.constants';
-import { LoginModalService } from 'app/core/login/login-modal.service';
-import { RegisterService } from './register.service';
+import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared';
+import { LoginModalService } from 'app/core';
+import { Register } from './register.service';
 
 @Component({
   selector: 'jhi-register',
   templateUrl: './register.component.html'
 })
-export class RegisterComponent implements AfterViewInit {
-  @ViewChild('login', { static: false })
-  login?: ElementRef;
-
-  doNotMatch = false;
-  error = false;
-  errorEmailExists = false;
-  errorUserExists = false;
-  success = false;
+export class RegisterComponent implements OnInit, AfterViewInit {
+  doNotMatch: string;
+  error: string;
+  errorEmailExists: string;
+  errorUserExists: string;
+  success: boolean;
+  modalRef: NgbModalRef;
 
   registerForm = this.fb.group({
     login: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern('^[_.@A-Za-z0-9-]*$')]],
@@ -29,49 +27,57 @@ export class RegisterComponent implements AfterViewInit {
   });
 
   constructor(
-    private languageService: JhiLanguageService,
     private loginModalService: LoginModalService,
-    private registerService: RegisterService,
+    private registerService: Register,
+    private elementRef: ElementRef,
     private renderer: Renderer,
     private fb: FormBuilder
   ) {}
 
-  ngAfterViewInit(): void {
-    if (this.login) {
-      this.renderer.invokeElementMethod(this.login.nativeElement, 'focus', []);
-    }
+  ngOnInit() {
+    this.success = false;
   }
 
-  register(): void {
-    this.doNotMatch = false;
-    this.error = false;
-    this.errorEmailExists = false;
-    this.errorUserExists = false;
+  ngAfterViewInit() {
+    this.renderer.invokeElementMethod(this.elementRef.nativeElement.querySelector('#login'), 'focus', []);
+  }
 
-    const password = this.registerForm.get(['password'])!.value;
-    if (password !== this.registerForm.get(['confirmPassword'])!.value) {
-      this.doNotMatch = true;
+  register() {
+    let registerAccount = {};
+    const login = this.registerForm.get(['login']).value;
+    const email = this.registerForm.get(['email']).value;
+    const password = this.registerForm.get(['password']).value;
+    if (password !== this.registerForm.get(['confirmPassword']).value) {
+      this.doNotMatch = 'ERROR';
     } else {
-      const login = this.registerForm.get(['login'])!.value;
-      const email = this.registerForm.get(['email'])!.value;
-      this.registerService.save({ login, email, password, langKey: this.languageService.getCurrentLanguage() }).subscribe(
-        () => (this.success = true),
+      registerAccount = { ...registerAccount, login, email, password };
+      this.doNotMatch = null;
+      this.error = null;
+      this.errorUserExists = null;
+      this.errorEmailExists = null;
+      registerAccount = { ...registerAccount, langKey: 'en' };
+
+      this.registerService.save(registerAccount).subscribe(
+        () => {
+          this.success = true;
+        },
         response => this.processError(response)
       );
     }
   }
 
-  openLogin(): void {
-    this.loginModalService.open();
+  openLogin() {
+    this.modalRef = this.loginModalService.open();
   }
 
-  private processError(response: HttpErrorResponse): void {
+  private processError(response: HttpErrorResponse) {
+    this.success = null;
     if (response.status === 400 && response.error.type === LOGIN_ALREADY_USED_TYPE) {
-      this.errorUserExists = true;
+      this.errorUserExists = 'ERROR';
     } else if (response.status === 400 && response.error.type === EMAIL_ALREADY_USED_TYPE) {
-      this.errorEmailExists = true;
+      this.errorEmailExists = 'ERROR';
     } else {
-      this.error = true;
+      this.error = 'ERROR';
     }
   }
 }

@@ -1,22 +1,17 @@
-import { NgModule } from '@angular/core';
-import { SyncifySharedLibsModule } from './shared-libs.module';
-import { FindLanguageFromKeyPipe } from './language/find-language-from-key.pipe';
-import { AlertComponent } from './alert/alert.component';
-import { AlertErrorComponent } from './alert/alert-error.component';
-import { LoginModalComponent } from './login/login.component';
-import { HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { SyncifySharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective } from './';
 
 @NgModule({
-  imports: [SyncifySharedLibsModule],
-  declarations: [FindLanguageFromKeyPipe, AlertComponent, AlertErrorComponent, LoginModalComponent, HasAnyAuthorityDirective],
-  entryComponents: [LoginModalComponent],
-  exports: [
-    SyncifySharedLibsModule,
-    FindLanguageFromKeyPipe,
-    AlertComponent,
-    AlertErrorComponent,
-    LoginModalComponent,
-    HasAnyAuthorityDirective
-  ]
+  imports: [SyncifySharedCommonModule],
+  declarations: [JhiLoginModalComponent, HasAnyAuthorityDirective],
+  entryComponents: [JhiLoginModalComponent],
+  exports: [SyncifySharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class SyncifySharedModule {}
+export class SyncifySharedModule {
+  static forRoot() {
+    return {
+      ngModule: SyncifySharedModule
+    };
+  }
+}
