@@ -1,19 +1,22 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { LogsService } from 'app/admin/logs/logs.service';
+import { Log } from 'app/admin/logs/log.model';
 import { SERVER_API_URL } from 'app/app.constants';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('Service Tests', () => {
   describe('Logs Service', () => {
     let service: LogsService;
-    let httpMock: HttpTestingController;
+    let httpMock;
+    let expectedResult;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule]
       });
 
+      expectedResult = {};
       service = TestBed.get(LogsService);
       httpMock = TestBed.get(HttpTestingController);
     });

@@ -1,10 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { TranslateService } from '@ngx-translate/core';
-import { JhiEventManager, JhiAlert, JhiAlertService, JhiEventWithContent } from 'ng-jhipster';
+import { JhiEventManager, JhiAlert, JhiAlertService } from 'ng-jhipster';
 import { Subscription } from 'rxjs';
-
-import { AlertError } from './alert-error.model';
 
 @Component({
   selector: 'jhi-alert-error',
@@ -18,18 +14,16 @@ import { AlertError } from './alert-error.model';
     </div>
   `
 })
-export class AlertErrorComponent implements OnDestroy {
-  alerts: JhiAlert[] = [];
-  errorListener: Subscription;
-  httpErrorListener: Subscription;
+export class JhiAlertErrorComponent implements OnDestroy {
+  alerts: any[];
+  cleanHttpErrorListener: Subscription;
+  /* tslint:disable */
+  constructor(private alertService: JhiAlertService, private eventManager: JhiEventManager) {
+    /* tslint:enable */
+    this.alerts = [];
 
-  constructor(private alertService: JhiAlertService, private eventManager: JhiEventManager, translateService: TranslateService) {
-    this.errorListener = eventManager.subscribe('syncifyApp.error', (response: JhiEventWithContent<AlertError>) => {
-      const errorResponse = response.content;
-      this.addErrorAlert(errorResponse.message, errorResponse.key, errorResponse.params);
-    });
-
-    this.httpErrorListener = eventManager.subscribe('syncifyApp.httpError', (response: JhiEventWithContent<HttpErrorResponse>) => {
+    this.cleanHttpErrorListener = eventManager.subscribe('syncifyApp.httpError', response => {
+      let i;
       const httpErrorResponse = response.content;
       switch (httpErrorResponse.status) {
         // connection refused, server not reachable
@@ -37,7 +31,7 @@ export class AlertErrorComponent implements OnDestroy {
           this.addErrorAlert('Server not reachable', 'error.server.not.reachable');
           break;
 
-        case 400: {
+        case 400:
           const arr = httpErrorResponse.headers.keys();
           let errorHeader = null;
           let entityKey = null;
@@ -49,17 +43,18 @@ export class AlertErrorComponent implements OnDestroy {
             }
           });
           if (errorHeader) {
-            const entityName = translateService.instant('global.menu.entities.' + entityKey);
+            const entityName = entityKey;
             this.addErrorAlert(errorHeader, errorHeader, { entityName });
           } else if (httpErrorResponse.error !== '' && httpErrorResponse.error.fieldErrors) {
             const fieldErrors = httpErrorResponse.error.fieldErrors;
-            for (const fieldError of fieldErrors) {
+            for (i = 0; i < fieldErrors.length; i++) {
+              const fieldError = fieldErrors[i];
               if (['Min', 'Max', 'DecimalMin', 'DecimalMax'].includes(fieldError.message)) {
                 fieldError.message = 'Size';
               }
               // convert 'something[14].other[4].id' to 'something[].other[].id' so translations can be written to it
               const convertedField = fieldError.field.replace(/\[\d*\]/g, '[]');
-              const fieldName = translateService.instant('syncifyApp.' + fieldError.objectName + '.' + convertedField);
+              const fieldName = convertedField.charAt(0).toUpperCase() + convertedField.slice(1);
               this.addErrorAlert('Error on field "' + fieldName + '"', 'error.' + fieldError.message, { fieldName });
             }
           } else if (httpErrorResponse.error !== '' && httpErrorResponse.error.message) {
@@ -68,7 +63,6 @@ export class AlertErrorComponent implements OnDestroy {
             this.addErrorAlert(httpErrorResponse.error);
           }
           break;
-        }
 
         case 404:
           this.addErrorAlert('Not found', 'error.url.not.found');
@@ -84,30 +78,24 @@ export class AlertErrorComponent implements OnDestroy {
     });
   }
 
-  setClasses(alert: JhiAlert): { [key: string]: boolean } {
-    const classes = { 'jhi-toast': Boolean(alert.toast) };
-    if (alert.position) {
-      return { ...classes, [alert.position]: true };
-    }
-    return classes;
+  setClasses(alert) {
+    return {
+      'jhi-toast': alert.toast,
+      [alert.position]: true
+    };
   }
 
-  ngOnDestroy(): void {
-    if (this.errorListener) {
-      this.eventManager.destroy(this.errorListener);
-    }
-    if (this.httpErrorListener) {
-      this.eventManager.destroy(this.httpErrorListener);
+  ngOnDestroy() {
+    if (this.cleanHttpErrorListener !== undefined && this.cleanHttpErrorListener !== null) {
+      this.eventManager.destroy(this.cleanHttpErrorListener);
+      this.alerts = [];
     }
   }
 
-  addErrorAlert(message: string, key?: string, data?: any): void {
-    message = key && key !== null ? key : message;
-
+  addErrorAlert(message, key?, data?) {
     const newAlert: JhiAlert = {
       type: 'danger',
       msg: message,
-      params: data,
       timeout: 5000,
       toast: this.alertService.isToast(),
       scoped: true

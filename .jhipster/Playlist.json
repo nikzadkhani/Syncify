@@ -27,14 +27,13 @@
             "ownerSide": false
         }
     ],
-    "changelogDate": "20200225194100",
+    "changelogDate": "20200409124356",
     "entityTableName": "playlist",
     "dto": "no",
     "pagination": "no",
     "service": "no",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
-    "readOnly": false,
     "clientRootFolder": "",
     "applications": "*"
 }

@@ -8,7 +8,7 @@ export const errorRoute: Routes = [
     component: ErrorComponent,
     data: {
       authorities: [],
-      pageTitle: 'error.title'
+      pageTitle: 'Syncify'
     }
   },
   {
@@ -16,8 +16,8 @@ export const errorRoute: Routes = [
     component: ErrorComponent,
     data: {
       authorities: [],
-      pageTitle: 'error.title',
-      errorMessage: 'error.http.403'
+      pageTitle: 'Syncify',
+      error403: true
     }
   },
   {
@@ -25,8 +25,8 @@ export const errorRoute: Routes = [
     component: ErrorComponent,
     data: {
       authorities: [],
-      pageTitle: 'error.title',
-      errorMessage: 'error.http.404'
+      pageTitle: 'Syncify',
+      error404: true
     }
   },
   {

@@ -1,16 +1,32 @@
 export interface GuinessCompatibleSpy extends jasmine.Spy {
   /** By chaining the spy with and.returnValue, all calls to the function will return a specific
    * value. */
-  andReturn(val: any): GuinessCompatibleSpy;
+  andReturn(val: any): void;
   /** By chaining the spy with and.callFake, all calls to the spy will delegate to the supplied
    * function. */
   andCallFake(fn: Function): GuinessCompatibleSpy;
   /** removes all recorded calls */
-  reset(): void;
+  reset();
 }
 
 export class SpyObject {
-  constructor(type?: any) {
+  static stub(object = null, config = null, overrides = null) {
+    if (!(object instanceof SpyObject)) {
+      overrides = config;
+      config = object;
+      object = new SpyObject();
+    }
+
+    const m = {};
+    Object.keys(config).forEach(key => (m[key] = config[key]));
+    Object.keys(overrides).forEach(key => (m[key] = overrides[key]));
+    Object.keys(m).forEach(key => {
+      object.spy(key).andReturn(m[key]);
+    });
+    return object;
+  }
+
+  constructor(type = null) {
     if (type) {
       Object.keys(type.prototype).forEach(prop => {
         let m = null;
@@ -29,18 +45,23 @@ export class SpyObject {
     }
   }
 
-  spy(name: string): GuinessCompatibleSpy {
+  spy(name) {
     if (!this[name]) {
-      this[name] = this.createGuinnessCompatibleSpy(name);
+      this[name] = this._createGuinnessCompatibleSpy(name);
     }
     return this[name];
   }
 
-  private createGuinnessCompatibleSpy(name: string): GuinessCompatibleSpy {
-    const newSpy: GuinessCompatibleSpy = jasmine.createSpy(name) as any;
-    newSpy.andCallFake = newSpy.and.callFake as any;
-    newSpy.andReturn = newSpy.and.returnValue as any;
-    newSpy.reset = newSpy.calls.reset as any;
+  prop(name, value) {
+    this[name] = value;
+  }
+
+  /** @internal */
+  _createGuinnessCompatibleSpy(name): GuinessCompatibleSpy {
+    const newSpy: GuinessCompatibleSpy = <any>jasmine.createSpy(name);
+    newSpy.andCallFake = <any>newSpy.and.callFake;
+    newSpy.andReturn = <any>newSpy.and.returnValue;
+    newSpy.reset = <any>newSpy.calls.reset;
     // revisit return null here (previously needed for rtts_assert).
     newSpy.and.returnValue(null);
     return newSpy;

@@ -1,16 +1,23 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { SyncifySharedModule } from 'app/shared/shared.module';
-import { SongComponent } from './song.component';
-import { SongDetailComponent } from './song-detail.component';
-import { SongUpdateComponent } from './song-update.component';
-import { SongDeleteDialogComponent } from './song-delete-dialog.component';
-import { songRoute } from './song.route';
+import { SyncifySharedModule } from 'app/shared';
+import {
+  SongComponent,
+  SongDetailComponent,
+  SongUpdateComponent,
+  SongDeletePopupComponent,
+  SongDeleteDialogComponent,
+  songRoute,
+  songPopupRoute
+} from './';
+
+const ENTITY_STATES = [...songRoute, ...songPopupRoute];
 
 @NgModule({
-  imports: [SyncifySharedModule, RouterModule.forChild(songRoute)],
-  declarations: [SongComponent, SongDetailComponent, SongUpdateComponent, SongDeleteDialogComponent],
-  entryComponents: [SongDeleteDialogComponent]
+  imports: [SyncifySharedModule, RouterModule.forChild(ENTITY_STATES)],
+  declarations: [SongComponent, SongDetailComponent, SongUpdateComponent, SongDeleteDialogComponent, SongDeletePopupComponent],
+  entryComponents: [SongComponent, SongUpdateComponent, SongDeleteDialogComponent, SongDeletePopupComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SyncifySongModule {}

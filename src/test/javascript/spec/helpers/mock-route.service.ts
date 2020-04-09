@@ -1,8 +1,7 @@
-import Spy = jasmine.Spy;
-import { ActivatedRoute, Router, RouterEvent } from '@angular/router';
-import { Observable, of } from 'rxjs';
-
+import { ActivatedRoute, Router } from '@angular/router';
 import { SpyObject } from './spyobject';
+import { Observable, of } from 'rxjs';
+import Spy = jasmine.Spy;
 
 export class MockActivatedRoute extends ActivatedRoute {
   constructor(parameters?: any) {
@@ -23,9 +22,7 @@ export class MockActivatedRoute extends ActivatedRoute {
 export class MockRouter extends SpyObject {
   navigateSpy: Spy;
   navigateByUrlSpy: Spy;
-  events: Observable<RouterEvent> | null = null;
-  routerState: any;
-  url = '';
+  events: Observable<any>;
 
   constructor() {
     super(Router);
@@ -33,11 +30,7 @@ export class MockRouter extends SpyObject {
     this.navigateByUrlSpy = this.spy('navigateByUrl');
   }
 
-  setEvents(events: Observable<RouterEvent>): void {
-    this.events = events;
-  }
-
-  setRouterState(routerState: any): void {
-    this.routerState = routerState;
+  setRouterEvent(event: any) {
+    this.events = of(event);
   }
 }

@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { UserRouteAccessService } from 'app/core';
 import { SettingsComponent } from './settings.component';
 
 export const settingsRoute: Route = {
@@ -8,7 +8,7 @@ export const settingsRoute: Route = {
   component: SettingsComponent,
   data: {
     authorities: ['ROLE_USER'],
-    pageTitle: 'global.menu.account.settings'
+    pageTitle: 'Settings'
   },
   canActivate: [UserRouteAccessService]
 };

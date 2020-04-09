@@ -26,14 +26,13 @@
             "relationshipName": "playlist"
         }
     ],
-    "changelogDate": "20200225194000",
+    "changelogDate": "20200409124355",
     "entityTableName": "song",
     "dto": "no",
     "pagination": "no",
     "service": "no",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
-    "readOnly": false,
     "clientRootFolder": "",
     "applications": "*"
 }

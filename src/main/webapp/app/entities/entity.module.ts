@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -6,18 +6,22 @@ import { RouterModule } from '@angular/router';
     RouterModule.forChild([
       {
         path: 'song',
-        loadChildren: () => import('./song/song.module').then(m => m.SyncifySongModule)
+        loadChildren: './song/song.module#SyncifySongModule'
       },
       {
         path: 'playlist',
-        loadChildren: () => import('./playlist/playlist.module').then(m => m.SyncifyPlaylistModule)
+        loadChildren: './playlist/playlist.module#SyncifyPlaylistModule'
       },
       {
         path: 'user-details',
-        loadChildren: () => import('./user-details/user-details.module').then(m => m.SyncifyUserDetailsModule)
+        loadChildren: './user-details/user-details.module#SyncifyUserDetailsModule'
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])
-  ]
+  ],
+  declarations: [],
+  entryComponents: [],
+  providers: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SyncifyEntityModule {}

@@ -1,16 +1,29 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { SyncifySharedModule } from 'app/shared/shared.module';
-import { PlaylistComponent } from './playlist.component';
-import { PlaylistDetailComponent } from './playlist-detail.component';
-import { PlaylistUpdateComponent } from './playlist-update.component';
-import { PlaylistDeleteDialogComponent } from './playlist-delete-dialog.component';
-import { playlistRoute } from './playlist.route';
+import { SyncifySharedModule } from 'app/shared';
+import {
+  PlaylistComponent,
+  PlaylistDetailComponent,
+  PlaylistUpdateComponent,
+  PlaylistDeletePopupComponent,
+  PlaylistDeleteDialogComponent,
+  playlistRoute,
+  playlistPopupRoute
+} from './';
+
+const ENTITY_STATES = [...playlistRoute, ...playlistPopupRoute];
 
 @NgModule({
-  imports: [SyncifySharedModule, RouterModule.forChild(playlistRoute)],
-  declarations: [PlaylistComponent, PlaylistDetailComponent, PlaylistUpdateComponent, PlaylistDeleteDialogComponent],
-  entryComponents: [PlaylistDeleteDialogComponent]
+  imports: [SyncifySharedModule, RouterModule.forChild(ENTITY_STATES)],
+  declarations: [
+    PlaylistComponent,
+    PlaylistDetailComponent,
+    PlaylistUpdateComponent,
+    PlaylistDeleteDialogComponent,
+    PlaylistDeletePopupComponent
+  ],
+  entryComponents: [PlaylistComponent, PlaylistUpdateComponent, PlaylistDeleteDialogComponent, PlaylistDeletePopupComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SyncifyPlaylistModule {}

@@ -8,15 +8,17 @@ import { IPlaylist } from 'app/shared/model/playlist.model';
   templateUrl: './playlist-detail.component.html'
 })
 export class PlaylistDetailComponent implements OnInit {
-  playlist: IPlaylist | null = null;
+  playlist: IPlaylist;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ playlist }) => (this.playlist = playlist));
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ playlist }) => {
+      this.playlist = playlist;
+    });
   }
 
-  previousState(): void {
+  previousState() {
     window.history.back();
   }
 }

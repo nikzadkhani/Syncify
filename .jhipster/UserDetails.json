@@ -16,14 +16,13 @@
             "ownerSide": true
         }
     ],
-    "changelogDate": "20200225194200",
+    "changelogDate": "20200409124357",
     "entityTableName": "user_details",
     "dto": "no",
     "pagination": "no",
     "service": "no",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,
-    "readOnly": false,
     "clientRootFolder": "",
     "applications": "*"
 }

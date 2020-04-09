@@ -1,67 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { LANGUAGES } from 'app/core/language/language.constants';
-import { User } from 'app/core/user/user.model';
-import { UserService } from 'app/core/user/user.service';
+import { User, UserService } from 'app/core';
 
 @Component({
   selector: 'jhi-user-mgmt-update',
   templateUrl: './user-management-update.component.html'
 })
-export class UserManagementUpdateComponent implements OnInit {
-  user!: User;
-  languages = LANGUAGES;
-  authorities: string[] = [];
-  isSaving = false;
+export class UserMgmtUpdateComponent implements OnInit {
+  user: User;
+  languages: any[];
+  authorities: any[];
+  isSaving: boolean;
 
   editForm = this.fb.group({
-    id: [],
+    id: [null],
     login: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern('^[_.@A-Za-z0-9-]*')]],
     firstName: ['', [Validators.maxLength(50)]],
     lastName: ['', [Validators.maxLength(50)]],
     email: ['', [Validators.minLength(5), Validators.maxLength(254), Validators.email]],
-    activated: [],
+    activated: [true],
     langKey: [],
     authorities: []
   });
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.isSaving = false;
     this.route.data.subscribe(({ user }) => {
-      if (user) {
-        this.user = user;
-        if (this.user.id === undefined) {
-          this.user.activated = true;
-        }
-        this.updateForm(user);
-      }
+      this.user = user.body ? user.body : user;
+      this.updateForm(this.user);
     });
+    this.authorities = [];
     this.userService.authorities().subscribe(authorities => {
       this.authorities = authorities;
     });
-  }
-
-  previousState(): void {
-    window.history.back();
-  }
-
-  save(): void {
-    this.isSaving = true;
-    this.updateUser(this.user);
-    if (this.user.id !== undefined) {
-      this.userService.update(this.user).subscribe(
-        () => this.onSaveSuccess(),
-        () => this.onSaveError()
-      );
-    } else {
-      this.userService.create(this.user).subscribe(
-        () => this.onSaveSuccess(),
-        () => this.onSaveError()
-      );
-    }
   }
 
   private updateForm(user: User): void {
@@ -77,22 +52,37 @@ export class UserManagementUpdateComponent implements OnInit {
     });
   }
 
-  private updateUser(user: User): void {
-    user.login = this.editForm.get(['login'])!.value;
-    user.firstName = this.editForm.get(['firstName'])!.value;
-    user.lastName = this.editForm.get(['lastName'])!.value;
-    user.email = this.editForm.get(['email'])!.value;
-    user.activated = this.editForm.get(['activated'])!.value;
-    user.langKey = this.editForm.get(['langKey'])!.value;
-    user.authorities = this.editForm.get(['authorities'])!.value;
+  previousState() {
+    window.history.back();
   }
 
-  private onSaveSuccess(): void {
+  save() {
+    this.isSaving = true;
+    this.updateUser(this.user);
+    if (this.user.id !== null) {
+      this.userService.update(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
+    } else {
+      this.user.langKey = 'en';
+      this.userService.create(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
+    }
+  }
+
+  private updateUser(user: User): void {
+    user.login = this.editForm.get(['login']).value;
+    user.firstName = this.editForm.get(['firstName']).value;
+    user.lastName = this.editForm.get(['lastName']).value;
+    user.email = this.editForm.get(['email']).value;
+    user.activated = this.editForm.get(['activated']).value;
+    user.langKey = this.editForm.get(['langKey']).value;
+    user.authorities = this.editForm.get(['authorities']).value;
+  }
+
+  private onSaveSuccess(result) {
     this.isSaving = false;
     this.previousState();
   }
 
-  private onSaveError(): void {
+  private onSaveError() {
     this.isSaving = false;
   }
 }
