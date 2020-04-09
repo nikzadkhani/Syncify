@@ -3,22 +3,20 @@ package com.syncify.app.service;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.apache.commons.codec.binary.Base64;
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.interfaces.ECPrivateKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -36,72 +34,47 @@ public class JsonQueryUtils {
     private Preferences preferences = Preferences.userNodeForPackage(JsonQueryUtils.class);
     private String keyId = "R7SQHMWJKU";
     private String teamId = "A76HA22K75";
+    private String secretPath = "/Users/matt/mark/syncify-test/src/main/resources/secret.p8";
+    private String privateKey;
 
-    public JsonQueryUtils() {
+    public JsonQueryUtils(String keyId, String teamId, String privateKey) {
+        this.keyId=keyId;
+        this.teamId=teamId;
+        this.privateKey=privateKey;
         this.responseCode = 0;
         this.responseTrimmed = "";
         this.jsonObject = null;
     }
 
+    private PrivateKey getPrivateKey() throws Exception {
+//read your key
+        //String path = new PathResource(secretPath).getFile().getAbsolutePath();
 
+        final PEMParser pemParser = new PEMParser(new StringReader(privateKey));
+        final JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
+        final PrivateKeyInfo object = (PrivateKeyInfo) pemParser.readObject();
 
+        return converter.getPrivateKey(object);
+    }
 
-    private String getToken() throws NoSuchAlgorithmException, InvalidKeySpecException {
+    private String generateJWT(PrivateKey pKey) throws Exception {
+        if (pKey == null) {
+            pKey = getPrivateKey();
+        }
 
-        JsonParser parser = new JsonParser();
-
-        String secret = null;
-
-        secret="-----BEGIN PRIVATE KEY-----MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgVJrJRAoZI6S2UkwZA7EhHhKW5zSloouwue/Q3D4cyOmgCgYIKoZIzj0DAQehRANCAAQZyu0OBCN4XCY+4F/E0d+pqXJoLZ7hXbYSN4TMgiEjNnpeX0anKWMk8zeRmHfDa05waNKs5XAFQUyVr1X3PpvF-----END PRIVATE KEY-----";
-
-            //secret = "MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgVJrJRAoZI6S2UkwZ A7EhHhKW5zSloouwue/Q3D4cyOmgCgYIKoZIzj0DAQehRANCAAQZyu0OBCN4XCY+ 4F/E0d+pqXJoLZ7hXbYSN4TMgiEjNnpeX0anKWMk8zeRmHfDa05waNKs5XAFQUyV r1X3PpvF";
-
-            System.out.println("secret key is: " + secret);
-
-
-        //The JWT signature algorithm we will be using to sign the token
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.ES256;
-        //byte[] publicBytes = Base64.decodeBase64(secret);
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(secret.getBytes("utf-8"));
-        KeyFactory keyFactory = KeyFactory.getInstance("EC");
-        PrivateKey prvKey = keyFactory.generatePrivate(keySpec);
-        ECPrivateKey eckey = (ECPrivateKey)prvKey;
-
-
-        long nowMillis = System.currentTimeMillis();
-        System.out.println("nowMillis: " + nowMillis);
-        Date now = new Date(nowMillis);
-        Date expiry = new Date(nowMillis + 3100100100L);
-
-        long expiryPref = nowMillis + 3100100100L;
-
-        preferences.getLong("expiry",0);
-        preferences.putLong("expiry", expiryPref);
-
-        System.out.println("EXP: " + expiry.toString());
-        System.out.println("NOW: " + now.toString());
-
-        //Setting the JWT Claims
-        JwtBuilder builder = Jwts.builder()
-            .setIssuedAt(now)
-            .setHeaderParam("alg","ES256")
-            .setHeaderParam("kid",keyId)
-            .setExpiration(expiry)
+        String token = Jwts.builder()
+            .setHeaderParam(JwsHeader.KEY_ID, keyId)
             .setIssuer(teamId)
-            .signWith( keyFactory.generatePrivate(secret), signatureAlgorithm);
+            .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 5)))
+            .setIssuedAt(new Date(System.currentTimeMillis()))
+            .signWith(pKey, SignatureAlgorithm.ES256)
+            .compact();
 
-
-
-        System.out.println("BUILDER: " + builder.compact());
-
-        preferences.get("builderString","");
-        preferences.put("builderString", builder.compact().toString());
-
-        return builder.compact().toString();
+        return token;
     }
 
 
-    public JsonObject getJson(String link) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public JsonObject getJson(String link) throws NoSuchAlgorithmException {
 
         String response = "";
         BufferedReader in = null;
@@ -122,7 +95,7 @@ public class JsonQueryUtils {
             System.out.println("preferences.get(builderString,0): " + preferences.get("builderString",""));
 
             if(preferences.getLong("expiry",0) < System.currentTimeMillis() || preferences.get("builderString","") == null) {
-                basicAuth = "Bearer " + getToken();
+                basicAuth = "Bearer " + generateJWT(getPrivateKey());
                 System.out.println("###getToken()###");
             } else {
                 basicAuth = "Bearer " + preferences.get("builderString","");
@@ -177,6 +150,8 @@ public class JsonQueryUtils {
             System.out.println("ProtocolException!!");
         } catch (IOException ex) {
             System.out.println("IOException!!");
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (in != null) {
                 try {
