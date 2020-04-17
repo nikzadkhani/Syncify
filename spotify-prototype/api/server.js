@@ -5,7 +5,6 @@ const express = require('express'),
     mongoose = require('mongoose'),
     config = require('./DB');
 
-const businessRoute = require('./routes/business.route');
 const playlistRoute = require('./routes/playlist.route');
 mongoose.Promise = global.Promise;
 mongoose.connect(config.DB, { useNewUrlParser: true }).then(

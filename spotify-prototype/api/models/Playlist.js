@@ -15,7 +15,7 @@ let Song = new Schema({
     default: Date.now
   },
   song_name: String,
-  song_artist: String
+  song_artist: String,
   song_album: String
 })
 
