@@ -1,7 +1,7 @@
 version: '2'
 services:
   syncify-postgresql:
-    image: postgres:11.3
+    image: postgres:12.1
     # volumes:
     #     - ~/volumes/jhipster/Syncify/postgresql/:/var/lib/postgresql/data/
     environment:

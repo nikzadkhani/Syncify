@@ -2,10 +2,11 @@ import { IPlaylist } from 'app/shared/model/playlist.model';
 
 export interface IUserDetails {
   id?: number;
+  syncifyId?: string;
   platformUserName?: string;
-  playlists?: IPlaylist[];
+  playlistIds?: IPlaylist[];
 }
 
 export class UserDetails implements IUserDetails {
-  constructor(public id?: number, public platformUserName?: string, public playlists?: IPlaylist[]) {}
+  constructor(public id?: number, public syncifyId?: string, public platformUserName?: string, public playlistIds?: IPlaylist[]) {}
 }

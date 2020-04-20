@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 
-import { UserRouteAccessService } from 'app/core';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { PasswordComponent } from './password.component';
 
 export const passwordRoute: Route = {
@@ -8,7 +8,7 @@ export const passwordRoute: Route = {
   component: PasswordComponent,
   data: {
     authorities: ['ROLE_USER'],
-    pageTitle: 'Password'
+    pageTitle: 'global.menu.account.password'
   },
   canActivate: [UserRouteAccessService]
 };

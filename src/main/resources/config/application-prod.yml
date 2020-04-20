@@ -16,8 +16,8 @@
 logging:
   level:
     ROOT: INFO
-    syncify.app: INFO
     io.github.jhipster: INFO
+    com.syncify.app: INFO
 
 eureka:
   instance:
@@ -47,8 +47,7 @@ spring:
       poolName: Hikari
       auto-commit: false
   jpa:
-    database-platform: io.github.jhipster.domain.util.FixedPostgreSQL95Dialect
-    database: POSTGRESQL
+    database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
     show-sql: false
     properties:
       hibernate.id.new_generator_mappings: true
@@ -56,6 +55,12 @@ spring:
       hibernate.cache.use_second_level_cache: true
       hibernate.cache.use_query_cache: false
       hibernate.generate_statistics: false
+      # modify batch size as necessary
+      hibernate.jdbc.batch_size: 25
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
+      hibernate.query.in_clause_parameter_padding: true
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
@@ -113,7 +118,7 @@ jhipster:
     cache: # Used by the CachingHttpHeadersFilter
       timeToLiveInDays: 1461
   cache: # Cache configuration
-    ehcache: # Ehcache configuration
+    caffeine: # Caffeine configuration
       time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
       max-entries: 1000 # Number of objects in each cache entry
   security:
@@ -124,12 +129,11 @@ jhipster:
         # - In the JHipster Registry (which includes a Spring Cloud Config server)
         # - In a separate `application-prod.yml` file, in the same folder as your executable JAR file
         # - In the `JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET` environment variable
-        base64-secret: YzA0NjVmYmVmNTllZTNhM2M1ZjlhNmFmZjkwNWIxMzUyZDI3M2JhNzVjNGVjNjhmMGMxNjlhZmZkYTg0ZGRmMThmYWE2YWFkMGZhNzdlMjg1ODYyN2Q0ZTFjZTgxOWQ1ZDg4MDBiMjc5NTdiNzg2MDUyYWRlOWUxMmJkMjNmZWY=
+        base64-secret: MzhkOGYwYjkzNjA0YWY5ODQ5ZDRjMmU0OTcyZjFjOTE1OWQ1YzEzZjkzMjQzNmQwMzZmOGY2YjcwODJmOTE5MGEwODg2NGRkNmY5ZmZmZmNjM2FhMzQ5Zjg2MDhjYTE3ZWY4YzU5NDkwMGM2ZGRlMTNmODhlNWNmOGQ5OGY1M2E=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    from: Syncify@localhost
     base-url: http://my-server-url-to-change # Modify according to your server's URL
   metrics:
     logs: # Reports metrics in the logs
@@ -142,6 +146,9 @@ jhipster:
       host: localhost
       port: 5000
       queue-size: 512
+  audit-events:
+    retention-period: 30 # Number of days before audit events are deleted.
+
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

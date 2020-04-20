@@ -1,22 +1,29 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="playlist">
-            <h2><span>Playlist</span> {{playlist.id}}</h2>
+            <h2><span jhiTranslate="syncifyApp.playlist.detail.title">Playlist</span> {{ playlist.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
-                <dt><span>Name</span></dt>
+                <dt><span jhiTranslate="syncifyApp.playlist.syncifyId">Syncify Id</span></dt>
                 <dd>
-                    <span>{{playlist.name}}</span>
+                    <span>{{ playlist.syncifyId }}</span>
                 </dd>
-                <dt><span>Author</span></dt>
+                <dt><span jhiTranslate="syncifyApp.playlist.name">Name</span></dt>
                 <dd>
-                    <span>{{playlist.author}}</span>
+                    <span>{{ playlist.name }}</span>
                 </dd>
-                <dt><span>Song</span></dt>
+                <dt><span jhiTranslate="syncifyApp.playlist.author">Author</span></dt>
                 <dd>
-                    <div *ngIf="playlist.song">
-                        <a [routerLink]="['/song', playlist.song?.id, 'view']">{{playlist.song?.id}}</a>
+                    <span>{{ playlist.author }}</span>
+                </dd>
+                <dt><span jhiTranslate="syncifyApp.playlist.songId">Song Id</span></dt>
+                <dd>
+                    <div *ngIf="playlist.songId">
+                        <a [routerLink]="['/song', playlist.songId?.id, 'view']">{{ playlist.songId?.id }}</a>
                     </div>
                 </dd>
             </dl>
@@ -24,13 +31,13 @@
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/playlist', playlist.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

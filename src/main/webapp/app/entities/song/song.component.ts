@@ -1,65 +1,49 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ISong } from 'app/shared/model/song.model';
-import { AccountService } from 'app/core';
 import { SongService } from './song.service';
+import { SongDeleteDialogComponent } from './song-delete-dialog.component';
 
 @Component({
   selector: 'jhi-song',
   templateUrl: './song.component.html'
 })
 export class SongComponent implements OnInit, OnDestroy {
-  songs: ISong[];
-  currentAccount: any;
-  eventSubscriber: Subscription;
+  songs?: ISong[];
+  eventSubscriber?: Subscription;
 
-  constructor(
-    protected songService: SongService,
-    protected jhiAlertService: JhiAlertService,
-    protected eventManager: JhiEventManager,
-    protected accountService: AccountService
-  ) {}
+  constructor(protected songService: SongService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
 
-  loadAll() {
-    this.songService
-      .query()
-      .pipe(
-        filter((res: HttpResponse<ISong[]>) => res.ok),
-        map((res: HttpResponse<ISong[]>) => res.body)
-      )
-      .subscribe(
-        (res: ISong[]) => {
-          this.songs = res;
-        },
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
+  loadAll(): void {
+    this.songService.query().subscribe((res: HttpResponse<ISong[]>) => (this.songs = res.body || []));
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadAll();
-    this.accountService.identity().then(account => {
-      this.currentAccount = account;
-    });
     this.registerChangeInSongs();
   }
 
-  ngOnDestroy() {
-    this.eventManager.destroy(this.eventSubscriber);
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventManager.destroy(this.eventSubscriber);
+    }
   }
 
-  trackId(index: number, item: ISong) {
-    return item.id;
+  trackId(index: number, item: ISong): number {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    return item.id!;
   }
 
-  registerChangeInSongs() {
-    this.eventSubscriber = this.eventManager.subscribe('songListModification', response => this.loadAll());
+  registerChangeInSongs(): void {
+    this.eventSubscriber = this.eventManager.subscribe('songListModification', () => this.loadAll());
   }
 
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
+  delete(song: ISong): void {
+    const modalRef = this.modalService.open(SongDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.song = song;
   }
 }

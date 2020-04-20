@@ -1,65 +1,59 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { JhiAlertService } from 'ng-jhipster';
+
 import { IUserDetails, UserDetails } from 'app/shared/model/user-details.model';
 import { UserDetailsService } from './user-details.service';
 import { IPlaylist } from 'app/shared/model/playlist.model';
-import { PlaylistService } from 'app/entities/playlist';
+import { PlaylistService } from 'app/entities/playlist/playlist.service';
 
 @Component({
   selector: 'jhi-user-details-update',
   templateUrl: './user-details-update.component.html'
 })
 export class UserDetailsUpdateComponent implements OnInit {
-  isSaving: boolean;
-
-  playlists: IPlaylist[];
+  isSaving = false;
+  playlists: IPlaylist[] = [];
 
   editForm = this.fb.group({
     id: [],
+    syncifyId: [],
     platformUserName: [],
-    playlists: []
+    playlistIds: []
   });
 
   constructor(
-    protected jhiAlertService: JhiAlertService,
     protected userDetailsService: UserDetailsService,
     protected playlistService: PlaylistService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
 
-  ngOnInit() {
-    this.isSaving = false;
+  ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ userDetails }) => {
       this.updateForm(userDetails);
+
+      this.playlistService.query().subscribe((res: HttpResponse<IPlaylist[]>) => (this.playlists = res.body || []));
     });
-    this.playlistService
-      .query()
-      .pipe(
-        filter((mayBeOk: HttpResponse<IPlaylist[]>) => mayBeOk.ok),
-        map((response: HttpResponse<IPlaylist[]>) => response.body)
-      )
-      .subscribe((res: IPlaylist[]) => (this.playlists = res), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
-  updateForm(userDetails: IUserDetails) {
+  updateForm(userDetails: IUserDetails): void {
     this.editForm.patchValue({
       id: userDetails.id,
+      syncifyId: userDetails.syncifyId,
       platformUserName: userDetails.platformUserName,
-      playlists: userDetails.playlists
+      playlistIds: userDetails.playlistIds
     });
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 
-  save() {
+  save(): void {
     this.isSaving = true;
     const userDetails = this.createFromForm();
     if (userDetails.id !== undefined) {
@@ -72,33 +66,34 @@ export class UserDetailsUpdateComponent implements OnInit {
   private createFromForm(): IUserDetails {
     return {
       ...new UserDetails(),
-      id: this.editForm.get(['id']).value,
-      platformUserName: this.editForm.get(['platformUserName']).value,
-      playlists: this.editForm.get(['playlists']).value
+      id: this.editForm.get(['id'])!.value,
+      syncifyId: this.editForm.get(['syncifyId'])!.value,
+      platformUserName: this.editForm.get(['platformUserName'])!.value,
+      playlistIds: this.editForm.get(['playlistIds'])!.value
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IUserDetails>>) {
-    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IUserDetails>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
   }
 
-  protected onSaveError() {
+  protected onSaveError(): void {
     this.isSaving = false;
   }
-  protected onError(errorMessage: string) {
-    this.jhiAlertService.error(errorMessage, null, null);
-  }
 
-  trackPlaylistById(index: number, item: IPlaylist) {
+  trackById(index: number, item: IPlaylist): any {
     return item.id;
   }
 
-  getSelected(selectedVals: Array<any>, option: any) {
+  getSelected(selectedVals: IPlaylist[], option: IPlaylist): IPlaylist {
     if (selectedVals) {
       for (let i = 0; i < selectedVals.length; i++) {
         if (option.id === selectedVals[i].id) {

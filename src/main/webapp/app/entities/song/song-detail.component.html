@@ -1,38 +1,53 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="song">
-            <h2><span>Song</span> {{song.id}}</h2>
+            <h2><span jhiTranslate="syncifyApp.song.detail.title">Song</span> {{ song.id }}</h2>
+
             <hr>
+
             <jhi-alert-error></jhi-alert-error>
+
             <dl class="row-md jh-entity-details">
-                <dt><span>Artist</span></dt>
+                <dt><span jhiTranslate="syncifyApp.song.syncifyId">Syncify Id</span></dt>
                 <dd>
-                    <span>{{song.artist}}</span>
+                    <span>{{ song.syncifyId }}</span>
                 </dd>
-                <dt><span>Name</span></dt>
+                <dt><span jhiTranslate="syncifyApp.song.isrc">Isrc</span></dt>
                 <dd>
-                    <span>{{song.name}}</span>
+                    <span>{{ song.isrc }}</span>
                 </dd>
-                <dt><span>Spotify Id</span></dt>
+                <dt><span jhiTranslate="syncifyApp.song.name">Name</span></dt>
                 <dd>
-                    <span>{{song.spotifyId}}</span>
+                    <span>{{ song.name }}</span>
                 </dd>
-                <dt><span>Apple Id</span></dt>
+                <dt><span jhiTranslate="syncifyApp.song.artist">Artist</span></dt>
                 <dd>
-                    <span>{{song.appleId}}</span>
+                    <span>{{ song.artist }}</span>
+                </dd>
+                <dt><span jhiTranslate="syncifyApp.song.album">Album</span></dt>
+                <dd>
+                    <span>{{ song.album }}</span>
+                </dd>
+                <dt><span jhiTranslate="syncifyApp.song.spotifyURL">Spotify URL</span></dt>
+                <dd>
+                    <span>{{ song.spotifyURL }}</span>
+                </dd>
+                <dt><span jhiTranslate="syncifyApp.song.appleURL">Apple URL</span></dt>
+                <dd>
+                    <span>{{ song.appleURL }}</span>
                 </dd>
             </dl>
 
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
             <button type="button"
                     [routerLink]="['/song', song.id, 'edit']"
                     class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
         </div>
     </div>

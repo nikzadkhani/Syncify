@@ -8,17 +8,15 @@ import { IUserDetails } from 'app/shared/model/user-details.model';
   templateUrl: './user-details-detail.component.html'
 })
 export class UserDetailsDetailComponent implements OnInit {
-  userDetails: IUserDetails;
+  userDetails: IUserDetails | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.activatedRoute.data.subscribe(({ userDetails }) => {
-      this.userDetails = userDetails;
-    });
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(({ userDetails }) => (this.userDetails = userDetails));
   }
 
-  previousState() {
+  previousState(): void {
     window.history.back();
   }
 }
