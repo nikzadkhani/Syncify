@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AppleMusic {
 
-    private final Logger log = LoggerFactory.getLogger(Spotify.class);
+    private final Logger log = LoggerFactory.getLogger(AppleMusic.class);
 
     @Value("${secret.key-id}")
     private String keyId;

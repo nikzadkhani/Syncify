@@ -1,123 +1,82 @@
 package com.syncify.app.service;
 
-//TODO
-//update URIs
-// Update JSON Struct
-//Update Security Keys
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import io.jsonwebtoken.JwsHeader;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
-import org.bouncycastle.openssl.PEMParser;
-import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 
-import java.io.BufferedReader;
+import com.syncify.app.domain.Song;
+import com.wrapper.spotify.SpotifyApi;
+import com.wrapper.spotify.enums.ModelObjectType;
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
+import com.wrapper.spotify.model_objects.special.SearchResult;
+import com.wrapper.spotify.model_objects.specification.Track;
+import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
+import com.wrapper.spotify.requests.data.search.SearchItemRequest;
+import org.apache.hc.core5.http.ParseException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.security.PrivateKey;
-import java.util.Date;
 
-/**
- * This class is intended to make the API call to retrieve the JWT
- */
+@Service
+@Transactional
 public class SpotifyQueryUtils {
 
-    private int responseCode;
-    private String responseTrimmed;
-    private JsonObject jsonObject;
-    private String keyId;
-    private String teamId;
-    private String privateKey;
 
-    public SpotifyQueryUtils(String keyId, String teamId, String privateKey) {
-        this.keyId = keyId;
-        this.teamId = teamId;
-        this.privateKey = privateKey;
-        this.responseCode = 0;
-        this.responseTrimmed = "";
-        this.jsonObject = null;
+    private final SpotifyApi spotifyApi;
+    private final ClientCredentialsRequest clientCredentialsRequest;
+    public static final String TYPE = ModelObjectType.TRACK.getType();
+
+    public SpotifyQueryUtils( @Value("${secret.client-id}") String clientId, @Value("${secret.client-secret}") String clientSecret){
+        spotifyApi = new SpotifyApi.Builder()
+            .setClientId(clientId)
+            .setClientSecret(clientSecret)
+            .build();
+        clientCredentialsRequest = spotifyApi.clientCredentials()
+            .build();
     }
 
-    private PrivateKey getPrivateKey() throws Exception {
+    public Song getSongFromSearchTerm(String songName) {
+        updateClientCredentials();
 
-        final PEMParser pemParser = new PEMParser(new StringReader(privateKey));
-        final JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
-        final PrivateKeyInfo object = (PrivateKeyInfo) pemParser.readObject();
+        Track firstTrack = getTrackForSongName(songName);
 
-        return converter.getPrivateKey(object);
+        return mapTrackToSong(firstTrack);
     }
 
-    private String generateJWT(PrivateKey pKey) {
-
-        String token = Jwts.builder()
-            .setHeaderParam(JwsHeader.KEY_ID, keyId)
-            .setIssuer(teamId)
-            .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 5)))
-            .setIssuedAt(new Date(System.currentTimeMillis()))
-            .signWith(pKey, SignatureAlgorithm.ES256)
-            .compact();
-
-        return token;
+    private Song mapTrackToSong(Track firstTrack) {
+        Song firstSong = new Song();
+        firstSong.setSpotifyURL(firstTrack.getHref());
+        firstSong.setName(firstTrack.getName());
+        firstSong.setIsrc(firstTrack.getExternalIds().getExternalIds().get("isrc"));
+        firstSong.setArtist(firstTrack.getArtists()[0].getName());
+        firstSong.setAlbum(firstTrack.getAlbum().getName());
+        return firstSong;
     }
 
+    private Track getTrackForSongName(String songName) {
+        SearchItemRequest searchItemRequest = spotifyApi.searchItem(songName, TYPE)
+            .build();
 
-    public JsonObject getJson(String link) {
-
-        String response = "";
-        BufferedReader in = null;
-
+        Track firstTrack = null;
         try {
-            URL url = new URL(link);
-            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+            final SearchResult searchResult = searchItemRequest.execute();
+            firstTrack = searchResult.getTracks().getItems()[0];
 
-            String basicAuth = "";
-
-            basicAuth = "Bearer " + generateJWT(getPrivateKey());
-
-            httpCon.setRequestMethod("GET");
-            httpCon.setRequestProperty("Authorization", basicAuth);
-            this.responseCode = httpCon.getResponseCode();
-
-            System.out.println("Sending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
-
-            if (this.responseCode != 200) {
-                return null;
-            }
-
-            in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));
-            String inputLine;
-
-            while ((inputLine = in.readLine()) != null) {
-                response += inputLine;
-            }
-
-        } catch (MalformedURLException ex) {
-            System.out.println("MalformedURLException!!");
-        } catch (ProtocolException ex) {
-            System.out.println("ProtocolException!!");
-        } catch (IOException ex) {
-            System.out.println("IOException!!");
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        } catch (IOException | SpotifyWebApiException | ParseException e) {
+            System.out.println("Error: " + e.getMessage());
         }
+        return firstTrack;
+    }
 
-        this.responseTrimmed = response.trim();
-        return new JsonParser().parse(responseTrimmed).getAsJsonObject();
+    private void updateClientCredentials() {
+        try {
+            final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
+
+            spotifyApi.setAccessToken(clientCredentials.getAccessToken());
+
+            System.out.println("Expires in: " + clientCredentials.getExpiresIn());
+        } catch (IOException | SpotifyWebApiException | ParseException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }
