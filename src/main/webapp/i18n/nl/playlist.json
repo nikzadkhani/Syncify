@@ -1,0 +1,26 @@
+{
+  "syncifyApp": {
+    "playlist": {
+      "home": {
+        "title": "Playlists",
+        "createLabel": "Maak een nieuwe Playlist",
+        "createOrEditLabel": "Maak of wijzig een Playlist",
+        "notFound": "No Playlists found"
+      },
+      "created": "A new Playlist is created with identifier {{ param }}",
+      "updated": "A Playlist is updated with identifier {{ param }}",
+      "deleted": "A Playlist is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Bent u zeker dat u Playlist {{ id }} wilt verwijderen?"
+      },
+      "detail": {
+        "title": "Playlist"
+      },
+      "syncifyId": "Syncify Id",
+      "name": "Name",
+      "author": "Author",
+      "songId": "Song Id",
+      "userId": "User Id"
+    }
+  }
+}
