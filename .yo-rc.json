@@ -1,7 +1,7 @@
 {
   "generator-jhipster": {
     "promptValues": {
-      "packageName": "syncify.app"
+      "packageName": "com.syncify.app"
     },
     "jhipsterVersion": "6.1.2",
     "applicationType": "monolith",
