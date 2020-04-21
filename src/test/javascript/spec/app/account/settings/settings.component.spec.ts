@@ -47,8 +47,7 @@ describe('Component Tests', () => {
       const settingsFormValues = {
         firstName: 'John',
         lastName: 'Doe',
-        email: 'john.doe@mail.com',
-        langKey: 'en'
+        email: 'john.doe@mail.com'
       };
 
       // WHEN

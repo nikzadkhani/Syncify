@@ -1,28 +1,32 @@
 entity Song{
-        id UUID,
-    artist String,
+	syncifyId UUID,
+    isrc String,
     name String,
-    spotifyId String,
-    appleId String
+    artist String,
+    album String,
+    spotifyURL String,
+    appleURL String
 }
 
 entity Playlist{
-        id UUID,
-        name String,
+	syncifyId UUID,
+	name String,
     author String
 }
 
 entity UserDetails{
-        id UUID,
-    platformUserName String,
-
+	syncifyId UUID,
+    platformUserName String
 
 }
 
 relationship OneToMany{
-        Song{playlist} to Playlist{song}
+	Song{playlistId} to Playlist{songId}
 }
 
 relationship ManyToMany{
-        UserDetails{playlist} to Playlist{user}
+	UserDetails{playlistId} to Playlist{userId}
+
 }
+
+

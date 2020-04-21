@@ -725,8 +725,6 @@
                             <artifactId>spring-beans</artifactId>
                             <version>${spring.version}</version>
                         </dependency>
-
-
                     </dependencies>
                 </plugin>
                 <plugin>

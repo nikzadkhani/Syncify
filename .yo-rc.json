@@ -3,14 +3,14 @@
     "promptValues": {
       "packageName": "com.syncify.app"
     },
-    "jhipsterVersion": "6.1.2",
+    "jhipsterVersion": "6.7.1",
     "applicationType": "monolith",
     "baseName": "Syncify",
-    "packageName": "syncify.app",
-    "packageFolder": "syncify/app",
+    "packageName": "com.syncify.app",
+    "packageFolder": "com/syncify/app",
     "serverPort": "8080",
     "authenticationType": "jwt",
-    "cacheProvider": "ehcache",
+    "cacheProvider": "caffeine",
     "enableHibernateCache": true,
     "websocket": false,
     "databaseType": "sql",
@@ -32,6 +32,9 @@
     "entitySuffix": "",
     "dtoSuffix": "DTO",
     "otherModules": [],
-    "enableTranslation": false
+    "enableTranslation": false,
+    "embeddableLaunchScript": false,
+    "creationTimestamp": 1587483513515,
+    "blueprints": []
   }
 }
