@@ -32,6 +32,7 @@ spring:
     active: dev
     include:
       - swagger
+      - dev-secrets
       # Uncomment to activate TLS for the dev profile
       #- tls
   devtools:
