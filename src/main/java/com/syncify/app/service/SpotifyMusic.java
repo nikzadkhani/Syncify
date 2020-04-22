@@ -19,14 +19,14 @@ import java.io.IOException;
 
 @Service
 @Transactional
-public class SpotifyQueryUtils {
+public class SpotifyMusic {
 
 
     private final SpotifyApi spotifyApi;
     private final ClientCredentialsRequest clientCredentialsRequest;
     public static final String TYPE = ModelObjectType.TRACK.getType();
 
-    public SpotifyQueryUtils( @Value("${secret.client-id}") String clientId, @Value("${secret.client-secret}") String clientSecret){
+    public SpotifyMusic(@Value("${secret.client-id}") String clientId, @Value("${secret.client-secret}") String clientSecret){
         spotifyApi = new SpotifyApi.Builder()
             .setClientId(clientId)
             .setClientSecret(clientSecret)

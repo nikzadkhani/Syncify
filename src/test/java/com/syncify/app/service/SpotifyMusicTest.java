@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = SyncifyApp.class)
 @ActiveProfiles(profiles = "test-secrets")
 @Transactional
-class SpotifyQueryUtilsTest {
+class SpotifyMusicTest {
 
     @Value("${secret.client-id}")
     private String clientId;
@@ -23,13 +23,13 @@ class SpotifyQueryUtilsTest {
     @Value("${secret.client-secret}")
     private String clientSecret;
 
-    private final Logger log = LoggerFactory.getLogger(SpotifyQueryUtilsTest.class);
+    private final Logger log = LoggerFactory.getLogger(SpotifyMusicTest.class);
 
 
     @Test
     public void getFirstSongForQuery() {
-        SpotifyQueryUtils spotifyQueryUtils = new SpotifyQueryUtils(clientId, clientSecret);
-        Song firstSongResults = spotifyQueryUtils.getSongFromSearchTerm("despacito");
+        SpotifyMusic spotifyMusic = new SpotifyMusic(clientId, clientSecret);
+        Song firstSongResults = spotifyMusic.getSongFromSearchTerm("despacito");
         assertThat(firstSongResults.getName().contains("despacito"));
         assertThat(firstSongResults.getIsrc().contains("USUM71607007"));
         assertThat(firstSongResults.getArtist().contains("Luis Fonsi"));
