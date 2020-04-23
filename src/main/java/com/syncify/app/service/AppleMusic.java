@@ -63,4 +63,10 @@ public class AppleMusic {
         song.setAppleURL(songJson.get("url").getAsString());
         return song;
     }
+
+    public void updateSongWithAppleURL(Song spotifySong) {
+        Song tempSong = getSongFromSearchTerm(spotifySong.getName());
+        spotifySong.setAppleURL(tempSong.getAppleURL());
+
+    }
 }
