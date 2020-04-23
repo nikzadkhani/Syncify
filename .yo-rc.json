@@ -1,0 +1,39 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.syncify.app"
+    },
+    "jhipsterVersion": "6.8.0",
+    "applicationType": "monolith",
+    "baseName": "syncify",
+    "packageName": "com.syncify.app",
+    "packageFolder": "com/syncify/app",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Memory",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": "eureka",
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NTU1ZmE0MTk4Y2JhYWMxNjlkZTc5ZGQyNTBmNGZkNzJiODIxMjMyYThjZTc4YjE0ODc2OWM2ZTM1Y2FjNGU4NjM2ZDQ1Y2YzMjdhNGQ4M2JmMGJmNjJkMjFhNjcxY2Q0NTY1YzEwNzM1MDczZjUzZDdhMzJiNGNmMzdjZGViNjA=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "materia",
+    "clientThemeVariant": "dark",
+    "creationTimestamp": 1587629128128,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "blueprints": []
+  }
+}

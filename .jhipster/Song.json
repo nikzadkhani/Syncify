@@ -1,0 +1,52 @@
+{
+    "name": "Song",
+    "fields": [
+        {
+            "fieldName": "syncifyId",
+            "fieldType": "UUID"
+        },
+        {
+            "fieldName": "isrc",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "artist",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "album",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "spotifyURL",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "appleURL",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "playlist",
+            "otherEntityRelationshipName": "songId",
+            "relationshipName": "playlistId"
+        }
+    ],
+    "changelogDate": "20200423081100",
+    "entityTableName": "song",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

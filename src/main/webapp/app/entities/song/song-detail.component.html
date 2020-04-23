@@ -1,0 +1,54 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="song">
+            <h2><span>Song</span> {{ song.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Syncify Id</span></dt>
+                <dd>
+                    <span>{{ song.syncifyId }}</span>
+                </dd>
+                <dt><span>Isrc</span></dt>
+                <dd>
+                    <span>{{ song.isrc }}</span>
+                </dd>
+                <dt><span>Name</span></dt>
+                <dd>
+                    <span>{{ song.name }}</span>
+                </dd>
+                <dt><span>Artist</span></dt>
+                <dd>
+                    <span>{{ song.artist }}</span>
+                </dd>
+                <dt><span>Album</span></dt>
+                <dd>
+                    <span>{{ song.album }}</span>
+                </dd>
+                <dt><span>Spotify URL</span></dt>
+                <dd>
+                    <span>{{ song.spotifyURL }}</span>
+                </dd>
+                <dt><span>Apple URL</span></dt>
+                <dd>
+                    <span>{{ song.appleURL }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/song', song.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

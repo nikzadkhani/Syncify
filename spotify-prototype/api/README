@@ -1,0 +1,24 @@
+This is the api layer for syncify. It is responsible for reading and writing to
+the database and any other api level.
+
+The best way to run this is using nodemon from the api directory:
+
+  nodemon server
+
+This server runs on port 4000. All api calls must start with a /syncify.
+
+Here are the valid calls that can be made (see routes/playlist.route.js):
+
+  / = this returns a list of playlists
+
+  /add = adds a playlist
+
+  /delete = deletes a playlist
+
+  /update = updates a playlist (name only)
+
+  /edit = returns a playlist object
+
+  /addsong = adds a song to a playlist
+
+  /removesong = removes a song from a playlist
