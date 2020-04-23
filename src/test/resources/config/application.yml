@@ -21,6 +21,8 @@ eureka:
     instanceId: syncify:${spring.application.instance-id:${random.value}}
 
 spring:
+  profiles:
+    active: test-secrets
   application:
     name: syncify
   datasource:
