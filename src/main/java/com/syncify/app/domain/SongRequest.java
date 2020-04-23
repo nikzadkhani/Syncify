@@ -1,12 +1,24 @@
 package com.syncify.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
-public class SongRequest {
+public class SongRequest implements Serializable {
     private UUID syncifyId;
 
     private String name;
 
+    public SongRequest(){};
+
+    public SongRequest(UUID syncifyId, String name) {
+        this.syncifyId = syncifyId;
+        this.name = name;
+    }
+
+    @JsonGetter("syncifyId")
     public UUID getSyncifyId() {
         return syncifyId;
     }
@@ -15,6 +27,7 @@ public class SongRequest {
         this.syncifyId = syncifyId;
     }
 
+    @JsonGetter("name")
     public String getName() {
         return name;
     }
@@ -47,5 +60,16 @@ public class SongRequest {
         int result = syncifyId != null ? syncifyId.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
+    }
+
+    public SongRequest syncifyId(UUID syncifyId) {
+        this.syncifyId = syncifyId;
+        return this;
+    }
+
+
+    public SongRequest name(String name) {
+        this.name = name;
+        return this;
     }
 }

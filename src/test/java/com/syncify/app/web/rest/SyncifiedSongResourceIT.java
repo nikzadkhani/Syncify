@@ -2,8 +2,10 @@ package com.syncify.app.web.rest;
 
 import com.syncify.app.SyncifyApp;
 import com.syncify.app.domain.Song;
+import com.syncify.app.domain.SongRequest;
 import com.syncify.app.repository.SongRepository;
 
+import liquibase.pro.packaged.S;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +100,8 @@ public class SyncifiedSongResourceIT {
         return song;
     }
 
+    public static SongRequest request = new SongRequest(UUID.randomUUID(),"despacito");
+
     @BeforeEach
     public void initTest() {
         song = createEntity(em);
@@ -109,9 +113,9 @@ public class SyncifiedSongResourceIT {
         int databaseSizeBeforeCreate = songRepository.findAll().size();
 
         // Create the Song
-        restSongMockMvc.perform(post("/api/syncifiedsongs")
+        restSongMockMvc.perform(post("/api/syncifiedSongs")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(song)))
+            .content(TestUtil.convertObjectToJsonBytes(request)))
             .andExpect(status().isCreated());
 
         // Validate the Song in the database
