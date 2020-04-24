@@ -145,5 +145,3 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
-
-*-secrets.yml

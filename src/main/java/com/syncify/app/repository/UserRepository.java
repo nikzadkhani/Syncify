@@ -17,13 +17,7 @@ import java.time.Instant;
  * Spring Data JPA repository for the {@link User} entity.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-
-    Optional<User> findOneByActivationKey(String activationKey);
-
-    List<User> findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(Instant dateTime);
-
-    Optional<User> findOneByResetKey(String resetKey);
+public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findOneByEmailIgnoreCase(String email);
 
