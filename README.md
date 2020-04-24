@@ -1,8 +1,19 @@
-# syncify
+# Syncify
 
-This application was generated using JHipster 6.8.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.8.0](https://www.jhipster.tech/documentation-archive/v6.8.0).
+Syncify is a an application that allows users to combine Spotify and Apple to sync playlists. Currently you can post 
+track names to the backend and it will create Songs inthe database with Apple and Spotify links to the song.
+
+POST requests can be made to /api/syncifiedSongs with the following body
+
+    {"syncifyId":"7f150217-21b4-43e1-b418-a2d0d32d1939","name":"Despacito"}
+
+Where the syncifyId is a uuid4.
+
+The resulting songs can be accessed at the /api/songs endpoint.
 
 ## Development
+
+This application was generated using JHipster 6.8.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.8.0](https://www.jhipster.tech/documentation-archive/v6.8.0).
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
 
