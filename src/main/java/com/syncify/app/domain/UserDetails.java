@@ -1,11 +1,10 @@
 package com.syncify.app.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -15,7 +14,6 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "user_details")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class UserDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,7 +30,6 @@ public class UserDetails implements Serializable {
     private String platformUserName;
 
     @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "user_details_playlist_id",
                joinColumns = @JoinColumn(name = "user_details_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "playlist_id_id", referencedColumnName = "id"))

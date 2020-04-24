@@ -11,6 +11,8 @@ import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import com.wrapper.spotify.requests.data.search.SearchItemRequest;
 import org.apache.hc.core5.http.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ import java.io.IOException;
 @Transactional
 public class SpotifyMusic {
 
+    private final Logger log = LoggerFactory.getLogger(SpotifyMusic.class);
 
     private final SpotifyApi spotifyApi;
     private final ClientCredentialsRequest clientCredentialsRequest;
@@ -33,10 +36,10 @@ public class SpotifyMusic {
             .build();
         clientCredentialsRequest = spotifyApi.clientCredentials()
             .build();
+        updateClientCredentials();
     }
 
     public Song getSongFromSearchTerm(String songName) {
-        updateClientCredentials();
 
         Track firstTrack = getTrackForSongName(songName);
 
@@ -63,7 +66,7 @@ public class SpotifyMusic {
             firstTrack = searchResult.getTracks().getItems()[0];
 
         } catch (IOException | SpotifyWebApiException | ParseException e) {
-            System.out.println("Error: " + e.getMessage());
+            log.error("Error: " + e.getMessage());
         }
         return firstTrack;
     }
@@ -74,9 +77,15 @@ public class SpotifyMusic {
 
             spotifyApi.setAccessToken(clientCredentials.getAccessToken());
 
-            System.out.println("Expires in: " + clientCredentials.getExpiresIn());
+            log.info("Expires in: " + clientCredentials.getExpiresIn());
         } catch (IOException | SpotifyWebApiException | ParseException e) {
-            System.out.println("Error: " + e.getMessage());
+            log.error("Error: " + e.getMessage());
         }
+    }
+
+    public void updateSongWithSpotifyURL(Song appleSong) {
+        Track tempTrack = getTrackForSongName(appleSong.getName());
+        Song tempSong = mapTrackToSong(tempTrack);
+        appleSong.setSpotifyURL(tempSong.getSpotifyURL());
     }
 }

@@ -54,7 +54,7 @@ public class UserDetailsResource {
         }
         UserDetails result = userDetailsRepository.save(userDetails);
         return ResponseEntity.created(new URI("/api/user-details/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -75,7 +75,7 @@ public class UserDetailsResource {
         }
         UserDetails result = userDetailsRepository.save(userDetails);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, userDetails.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, userDetails.getId().toString()))
             .body(result);
     }
 
@@ -114,6 +114,6 @@ public class UserDetailsResource {
     public ResponseEntity<Void> deleteUserDetails(@PathVariable Long id) {
         log.debug("REST request to delete UserDetails : {}", id);
         userDetailsRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

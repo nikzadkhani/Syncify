@@ -4,6 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router
 import { Observable, of, EMPTY } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
+import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { IUserDetails, UserDetails } from 'app/shared/model/user-details.model';
 import { UserDetailsService } from './user-details.service';
@@ -38,8 +39,8 @@ export const userDetailsRoute: Routes = [
     path: '',
     component: UserDetailsComponent,
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'syncifyApp.userDetails.home.title'
+      authorities: [Authority.USER],
+      pageTitle: 'UserDetails'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -50,8 +51,8 @@ export const userDetailsRoute: Routes = [
       userDetails: UserDetailsResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'syncifyApp.userDetails.home.title'
+      authorities: [Authority.USER],
+      pageTitle: 'UserDetails'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -62,8 +63,8 @@ export const userDetailsRoute: Routes = [
       userDetails: UserDetailsResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'syncifyApp.userDetails.home.title'
+      authorities: [Authority.USER],
+      pageTitle: 'UserDetails'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -74,8 +75,8 @@ export const userDetailsRoute: Routes = [
       userDetails: UserDetailsResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'syncifyApp.userDetails.home.title'
+      authorities: [Authority.USER],
+      pageTitle: 'UserDetails'
     },
     canActivate: [UserRouteAccessService]
   }

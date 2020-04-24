@@ -46,8 +46,8 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/db/syncify;DB_CLOSE_DELAY=-1
-    username: Syncify
+    url: jdbc:h2:mem:syncify;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: syncify
     password:
     hikari:
       poolName: Hikari
@@ -56,11 +56,12 @@ spring:
     console:
       enabled: false
   jpa:
+    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
     show-sql: true
     properties:
       hibernate.id.new_generator_mappings: true
       hibernate.connection.provider_disables_autocommit: true
-      hibernate.cache.use_second_level_cache: true
+      hibernate.cache.use_second_level_cache: false
       hibernate.cache.use_query_cache: false
       hibernate.generate_statistics: false
   liquibase:
@@ -95,10 +96,6 @@ server:
 # ===================================================================
 
 jhipster:
-  cache: # Cache configuration
-    caffeine: # Caffeine configuration
-      time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
-      max-entries: 100 # Number of objects in each cache entry
   # CORS is only enabled by default with the "dev" profile, so BrowserSync can access the API
   cors:
     allowed-origins: '*'
@@ -111,7 +108,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: YzA0NjVmYmVmNTllZTNhM2M1ZjlhNmFmZjkwNWIxMzUyZDI3M2JhNzVjNGVjNjhmMGMxNjlhZmZkYTg0ZGRmMThmYWE2YWFkMGZhNzdlMjg1ODYyN2Q0ZTFjZTgxOWQ1ZDg4MDBiMjc5NTdiNzg2MDUyYWRlOWUxMmJkMjNmZWY=
+        base64-secret: NTU1ZmE0MTk4Y2JhYWMxNjlkZTc5ZGQyNTBmNGZkNzJiODIxMjMyYThjZTc4YjE0ODc2OWM2ZTM1Y2FjNGU4NjM2ZDQ1Y2YzMjdhNGQ4M2JmMGJmNjJkMjFhNjcxY2Q0NTY1YzEwNzM1MDczZjUzZDdhMzJiNGNmMzdjZGViNjA=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000

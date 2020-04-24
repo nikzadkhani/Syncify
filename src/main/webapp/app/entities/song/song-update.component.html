@@ -1,54 +1,54 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-song-heading" jhiTranslate="syncifyApp.song.home.createOrEditLabel">Create or edit a Song</h2>
+            <h2 id="jhi-song-heading">Create or edit a Song</h2>
 
             <div>
                 <jhi-alert-error></jhi-alert-error>
 
                 <div class="form-group" [hidden]="!editForm.get('id')!.value">
-                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <label for="id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="syncifyApp.song.syncifyId" for="field_syncifyId">Syncify Id</label>
+                    <label class="form-control-label" for="field_syncifyId">Syncify Id</label>
                     <input type="text" class="form-control" name="syncifyId" id="field_syncifyId"
                            formControlName="syncifyId"/>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="syncifyApp.song.isrc" for="field_isrc">Isrc</label>
+                    <label class="form-control-label" for="field_isrc">Isrc</label>
                     <input type="text" class="form-control" name="isrc" id="field_isrc"
                            formControlName="isrc"/>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="syncifyApp.song.name" for="field_name">Name</label>
+                    <label class="form-control-label" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
                            formControlName="name"/>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="syncifyApp.song.artist" for="field_artist">Artist</label>
+                    <label class="form-control-label" for="field_artist">Artist</label>
                     <input type="text" class="form-control" name="artist" id="field_artist"
                            formControlName="artist"/>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="syncifyApp.song.album" for="field_album">Album</label>
+                    <label class="form-control-label" for="field_album">Album</label>
                     <input type="text" class="form-control" name="album" id="field_album"
                            formControlName="album"/>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="syncifyApp.song.spotifyURL" for="field_spotifyURL">Spotify URL</label>
+                    <label class="form-control-label" for="field_spotifyURL">Spotify URL</label>
                     <input type="text" class="form-control" name="spotifyURL" id="field_spotifyURL"
                            formControlName="spotifyURL"/>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="syncifyApp.song.appleURL" for="field_appleURL">Apple URL</label>
+                    <label class="form-control-label" for="field_appleURL">Apple URL</label>
                     <input type="text" class="form-control" name="appleURL" id="field_appleURL"
                            formControlName="appleURL"/>
                 </div>
@@ -56,11 +56,11 @@
 
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
                 </button>
 
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
                 </button>
             </div>
         </form>

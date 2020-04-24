@@ -36,4 +36,14 @@ class SpotifyMusicTest {
         assertThat(firstSongResults.getSpotifyURL().contains("https://api.spotify.com/v1/tracks/6habFhsOp2NvshLv26DqMb"));
     }
 
+    @Test
+    public void getSpotifyURLToExistingSong(){
+        SpotifyMusic spotifyMusic = new SpotifyMusic(clientId, clientSecret);
+        Song appleSong = new Song();
+        appleSong.setName("despacito");
+        appleSong.setIsrc("USUM71607007");
+        appleSong.setArtist("Luis Fonsi & Daddy Yankee");
+        spotifyMusic.updateSongWithSpotifyURL(appleSong);
+        assertThat(appleSong.getSpotifyURL().contains("https://api.spotify.com/v1/tracks/6habFhsOp2NvshLv26DqMb"));
+    }
 }

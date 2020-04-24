@@ -26,5 +26,4 @@ public interface UserDetailsRepository extends JpaRepository<UserDetails, Long> 
 
     @Query("select userDetails from UserDetails userDetails left join fetch userDetails.playlistIds where userDetails.id =:id")
     Optional<UserDetails> findOneWithEagerRelationships(@Param("id") Long id);
-
 }

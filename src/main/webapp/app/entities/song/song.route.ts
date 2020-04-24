@@ -4,6 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router
 import { Observable, of, EMPTY } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
+import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { ISong, Song } from 'app/shared/model/song.model';
 import { SongService } from './song.service';
@@ -38,8 +39,8 @@ export const songRoute: Routes = [
     path: '',
     component: SongComponent,
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'syncifyApp.song.home.title'
+      authorities: [Authority.USER],
+      pageTitle: 'Songs'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -50,8 +51,8 @@ export const songRoute: Routes = [
       song: SongResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'syncifyApp.song.home.title'
+      authorities: [Authority.USER],
+      pageTitle: 'Songs'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -62,8 +63,8 @@ export const songRoute: Routes = [
       song: SongResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'syncifyApp.song.home.title'
+      authorities: [Authority.USER],
+      pageTitle: 'Songs'
     },
     canActivate: [UserRouteAccessService]
   },
@@ -74,8 +75,8 @@ export const songRoute: Routes = [
       song: SongResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'syncifyApp.song.home.title'
+      authorities: [Authority.USER],
+      pageTitle: 'Songs'
     },
     canActivate: [UserRouteAccessService]
   }

@@ -3,26 +3,20 @@ package com.syncify.app.web.rest;
 import com.syncify.app.SyncifyApp;
 import com.syncify.app.domain.Song;
 import com.syncify.app.repository.SongRepository;
-import com.syncify.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.UUID;
 
-import static com.syncify.app.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -32,6 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link SongResource} REST controller.
  */
 @SpringBootTest(classes = SyncifyApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class SongResourceIT {
 
     private static final UUID DEFAULT_SYNCIFY_ID = UUID.randomUUID();
@@ -59,35 +56,12 @@ public class SongResourceIT {
     private SongRepository songRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restSongMockMvc;
 
     private Song song;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final SongResource songResource = new SongResource(songRepository);
-        this.restSongMockMvc = MockMvcBuilders.standaloneSetup(songResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -136,7 +110,7 @@ public class SongResourceIT {
 
         // Create the Song
         restSongMockMvc.perform(post("/api/songs")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(song)))
             .andExpect(status().isCreated());
 
@@ -163,7 +137,7 @@ public class SongResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSongMockMvc.perform(post("/api/songs")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(song)))
             .andExpect(status().isBadRequest());
 
@@ -243,7 +217,7 @@ public class SongResourceIT {
             .appleURL(UPDATED_APPLE_URL);
 
         restSongMockMvc.perform(put("/api/songs")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedSong)))
             .andExpect(status().isOk());
 
@@ -269,7 +243,7 @@ public class SongResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSongMockMvc.perform(put("/api/songs")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(song)))
             .andExpect(status().isBadRequest());
 
@@ -288,7 +262,7 @@ public class SongResourceIT {
 
         // Delete the song
         restSongMockMvc.perform(delete("/api/songs/{id}", song.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

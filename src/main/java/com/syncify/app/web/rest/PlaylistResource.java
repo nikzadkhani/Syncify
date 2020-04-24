@@ -54,7 +54,7 @@ public class PlaylistResource {
         }
         Playlist result = playlistRepository.save(playlist);
         return ResponseEntity.created(new URI("/api/playlists/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -75,7 +75,7 @@ public class PlaylistResource {
         }
         Playlist result = playlistRepository.save(playlist);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, playlist.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, playlist.getId().toString()))
             .body(result);
     }
 
@@ -113,6 +113,6 @@ public class PlaylistResource {
     public ResponseEntity<Void> deletePlaylist(@PathVariable Long id) {
         log.debug("REST request to delete Playlist : {}", id);
         playlistRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

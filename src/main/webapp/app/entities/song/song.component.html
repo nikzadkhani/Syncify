@@ -1,10 +1,10 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="syncifyApp.song.home.title">Songs</span>
+        <span>Songs</span>
 
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-song" [routerLink]="['/song/new']">
             <fa-icon icon="plus"></fa-icon>
-            <span  jhiTranslate="syncifyApp.song.home.createLabel">
+            <span>
             Create a new Song
             </span>
         </button>
@@ -15,21 +15,21 @@
     <jhi-alert></jhi-alert>
 
     <div class="alert alert-warning" id="no-result" *ngIf="songs?.length === 0">
-        <span jhiTranslate="syncifyApp.song.home.notFound">No songs found</span>
+        <span>No songs found</span>
     </div>
 
     <div class="table-responsive" id="entities" *ngIf="songs?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="syncifyApp.song.syncifyId">Syncify Id</span></th>
-                    <th scope="col" ><span jhiTranslate="syncifyApp.song.isrc">Isrc</span></th>
-                    <th scope="col" ><span jhiTranslate="syncifyApp.song.name">Name</span></th>
-                    <th scope="col" ><span jhiTranslate="syncifyApp.song.artist">Artist</span></th>
-                    <th scope="col" ><span jhiTranslate="syncifyApp.song.album">Album</span></th>
-                    <th scope="col" ><span jhiTranslate="syncifyApp.song.spotifyURL">Spotify URL</span></th>
-                    <th scope="col" ><span jhiTranslate="syncifyApp.song.appleURL">Apple URL</span></th>
+                    <th scope="col" ><span>ID</span></th>
+                    <th scope="col" ><span>Syncify Id</span></th>
+                    <th scope="col" ><span>Isrc</span></th>
+                    <th scope="col" ><span>Name</span></th>
+                    <th scope="col" ><span>Artist</span></th>
+                    <th scope="col" ><span>Album</span></th>
+                    <th scope="col" ><span>Spotify URL</span></th>
+                    <th scope="col" ><span>Apple URL</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -49,20 +49,20 @@
                                     [routerLink]="['/song', song.id, 'view']"
                                     class="btn btn-info btn-sm">
                                 <fa-icon icon="eye"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                                <span class="d-none d-md-inline">View</span>
                             </button>
 
                             <button type="submit"
                                     [routerLink]="['/song', song.id, 'edit']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                                <span class="d-none d-md-inline">Edit</span>
                             </button>
 
                             <button type="submit" (click)="delete(song)"
                                     class="btn btn-danger btn-sm">
                                 <fa-icon icon="times"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                                <span class="d-none d-md-inline">Delete</span>
                             </button>
                         </div>
                     </td>

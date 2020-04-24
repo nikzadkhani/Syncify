@@ -1,11 +1,10 @@
 package com.syncify.app.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -15,7 +14,6 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "song")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Song implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,7 +45,6 @@ public class Song implements Serializable {
     private String appleURL;
 
     @OneToMany(mappedBy = "songId")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Playlist> playlistIds = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

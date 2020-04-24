@@ -21,14 +21,16 @@ public class AppleMusic {
 
     private final Logger log = LoggerFactory.getLogger(AppleMusic.class);
 
-    @Value("${secret.key-id}")
     private String keyId;
-
-    @Value("${secret.team-id}")
     private String teamId;
-
-    @Value("${secret.private-key}")
     private String privateKey;
+
+    public AppleMusic(@Value("${secret.key-id}") String keyId, @Value("${secret.team-id}") String teamId, @Value("${secret.private-key}") String privateKey) {
+        this.keyId = keyId;
+        this.teamId = teamId;
+        this.privateKey = privateKey;
+    }
+
 
     private String appleApiUrl = "https://api.music.apple.com/v1/catalog/us/search?term=";
 
@@ -62,5 +64,11 @@ public class AppleMusic {
         song.setIsrc(songJson.get("isrc").getAsString());
         song.setAppleURL(songJson.get("url").getAsString());
         return song;
+    }
+
+    public void updateSongWithAppleURL(Song spotifySong) {
+        Song tempSong = getSongFromSearchTerm(spotifySong.getName());
+        spotifySong.setAppleURL(tempSong.getAppleURL());
+
     }
 }

@@ -17,15 +17,17 @@ eureka:
   client:
     enabled: false
   instance:
-    appname: Syncify
-    instanceId: Syncify:${spring.application.instance-id:${random.value}}
+    appname: syncify
+    instanceId: syncify:${spring.application.instance-id:${random.value}}
 
 spring:
+  profiles:
+    active: test-secrets
   application:
-    name: Syncify
+    name: syncify
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:mem:Syncify;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:syncify;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     name:
     username:
     password:
@@ -104,7 +106,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: YzA0NjVmYmVmNTllZTNhM2M1ZjlhNmFmZjkwNWIxMzUyZDI3M2JhNzVjNGVjNjhmMGMxNjlhZmZkYTg0ZGRmMThmYWE2YWFkMGZhNzdlMjg1ODYyN2Q0ZTFjZTgxOWQ1ZDg4MDBiMjc5NTdiNzg2MDUyYWRlOWUxMmJkMjNmZWY=
+        base64-secret: NTU1ZmE0MTk4Y2JhYWMxNjlkZTc5ZGQyNTBmNGZkNzJiODIxMjMyYThjZTc4YjE0ODc2OWM2ZTM1Y2FjNGU4NjM2ZDQ1Y2YzMjdhNGQ4M2JmMGJmNjJkMjFhNjcxY2Q0NTY1YzEwNzM1MDczZjUzZDdhMzJiNGNmMzdjZGViNjA=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
   metrics:

@@ -31,4 +31,13 @@ public class AppleMusicServiceIT {
         assertThat(firstSongResults.getAppleURL().contains("https://music.apple.com/us/album/despacito/1447401519?i=1447401620"));
     }
 
+    @Test
+    public void addAppleURLToExistingSong(){
+        Song spotifySong = new Song();
+        spotifySong.setName("despacito");
+        spotifySong.setIsrc("USUM71607007");
+        spotifySong.setArtist("Luis Fonsi & Daddy Yankee");
+        appleMusic.updateSongWithAppleURL(spotifySong);
+        assertThat(spotifySong.getAppleURL().contains("https://music.apple.com/us/album/despacito/1447401519?i=1447401620"));
+    }
 }

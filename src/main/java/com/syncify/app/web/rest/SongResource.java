@@ -54,7 +54,7 @@ public class SongResource {
         }
         Song result = songRepository.save(song);
         return ResponseEntity.created(new URI("/api/songs/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -75,7 +75,7 @@ public class SongResource {
         }
         Song result = songRepository.save(song);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, song.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, song.getId().toString()))
             .body(result);
     }
 
@@ -113,6 +113,6 @@ public class SongResource {
     public ResponseEntity<Void> deleteSong(@PathVariable Long id) {
         log.debug("REST request to delete Song : {}", id);
         songRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }
