@@ -11,6 +11,7 @@ import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,23 +35,17 @@ public class SyncifiedSongResource {
 
     private static final String ENTITY_NAME = "song";
 
-    @Value("${secret.client-id}")
-    private String clientId;
-
-    @Value("${secret.client-secret}")
-    private String clientSecret;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-
-    @Value("${secret.key-id}")
-    private String keyId;
-    @Value("${secret.team-id}")
-    private String teamId;
-    @Value("${secret.private-key}")
-    private String privateKey;
     private final SongRepository songRepository;
+
+    @Autowired
+    private AppleMusic appleMusic;
+
+    @Autowired
+    private SpotifyMusic spotifyMusic;
 
     public SyncifiedSongResource(SongRepository songRepository) {
         this.songRepository = songRepository;
@@ -66,8 +61,6 @@ public class SyncifiedSongResource {
     @PostMapping("/syncifiedSongs")
     public ResponseEntity<Song> createSong(@RequestBody SongRequest songRequest) throws URISyntaxException {
         log.debug("REST request to save Song : {}", songRequest);
-        AppleMusic appleMusic = new AppleMusic(keyId,teamId,privateKey);
-        SpotifyMusic spotifyMusic = new SpotifyMusic(clientId, clientSecret);
         Song song = appleMusic.getSongFromSearchTerm(songRequest.getName());
         spotifyMusic.updateSongWithSpotifyURL(song);
         song.setSyncifyId(songRequest.getSyncifyId());
