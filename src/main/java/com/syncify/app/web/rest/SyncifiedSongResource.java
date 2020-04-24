@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * REST controller for managing {@link com.syncify.app.domain.Song}.
@@ -69,6 +70,7 @@ public class SyncifiedSongResource {
         SpotifyMusic spotifyMusic = new SpotifyMusic(clientId, clientSecret);
         Song song = appleMusic.getSongFromSearchTerm(songRequest.getName());
         spotifyMusic.updateSongWithSpotifyURL(song);
+        song.setSyncifyId(songRequest.getSyncifyId());
 
         Song result = songRepository.save(song);
         return ResponseEntity.created(new URI("/api/songs/" + result.getId()))
