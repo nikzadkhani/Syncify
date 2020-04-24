@@ -42,6 +42,13 @@ public class SyncifiedSongResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+
+    @Value("${secret.key-id}")
+    private String keyId;
+    @Value("${secret.team-id}")
+    private String teamId;
+    @Value("${secret.private-key}")
+    private String privateKey;
     private final SongRepository songRepository;
 
     public SyncifiedSongResource(SongRepository songRepository) {
@@ -58,7 +65,7 @@ public class SyncifiedSongResource {
     @PostMapping("/syncifiedSongs")
     public ResponseEntity<Song> createSong(@RequestBody SongRequest songRequest) throws URISyntaxException {
         log.debug("REST request to save Song : {}", songRequest);
-        AppleMusic appleMusic = new AppleMusic();
+        AppleMusic appleMusic = new AppleMusic(keyId,teamId,privateKey);
         SpotifyMusic spotifyMusic = new SpotifyMusic(clientId, clientSecret);
         Song song = appleMusic.getSongFromSearchTerm(songRequest.getName());
         spotifyMusic.updateSongWithSpotifyURL(song);
