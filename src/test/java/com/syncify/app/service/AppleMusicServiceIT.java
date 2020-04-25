@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = SyncifyApp.class)
-@ActiveProfiles(profiles = "test-secrets")
 @Transactional
 public class AppleMusicServiceIT {
     private final Logger log = LoggerFactory.getLogger(AppleMusicServiceIT.class);

@@ -1,6 +1,7 @@
 package com.syncify.app.config.timezone;
 
 import com.syncify.app.SyncifyApp;
+import com.syncify.app.config.TestSecurityConfiguration;
 import com.syncify.app.repository.timezone.DateTimeWrapper;
 import com.syncify.app.repository.timezone.DateTimeWrapperRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Integration tests for the UTC Hibernate configuration.
  */
-@SpringBootTest(classes = SyncifyApp.class)
+@SpringBootTest(classes = {SyncifyApp.class, TestSecurityConfiguration.class})
 public class HibernateTimeZoneIT {
 
     @Autowired

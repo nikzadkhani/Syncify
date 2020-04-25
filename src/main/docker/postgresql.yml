@@ -3,9 +3,9 @@ services:
   syncify-postgresql:
     image: postgres:12.1
     # volumes:
-    #     - ~/volumes/jhipster/syncify/postgresql/:/var/lib/postgresql/data/
+    #     - ~/volumes/jhipster/Syncify/postgresql/:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=syncify
+      - POSTGRES_USER=Syncify
       - POSTGRES_PASSWORD=
     ports:
       - 5432:5432

@@ -1,8 +1,8 @@
 package com.syncify.app.repository;
 
 import com.syncify.app.SyncifyApp;
-
 import com.syncify.app.config.Constants;
+import com.syncify.app.config.TestSecurityConfiguration;
 import com.syncify.app.config.audit.AuditEventConverter;
 import com.syncify.app.domain.PersistentAuditEvent;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ import static com.syncify.app.repository.CustomAuditEventRepository.EVENT_DATA_C
 /**
  * Integration tests for {@link CustomAuditEventRepository}.
  */
-@SpringBootTest(classes = SyncifyApp.class)
+@SpringBootTest(classes = {SyncifyApp.class, TestSecurityConfiguration.class})
 @Transactional
 public class CustomAuditEventRepositoryIT {
 

@@ -1,6 +1,7 @@
 package com.syncify.app.web.rest;
 
 import com.syncify.app.SyncifyApp;
+import com.syncify.app.config.TestSecurityConfiguration;
 import io.github.jhipster.config.JHipsterProperties;
 import com.syncify.app.config.audit.AuditEventConverter;
 import com.syncify.app.domain.PersistentAuditEvent;
@@ -36,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @AutoConfigureMockMvc
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
-@SpringBootTest(classes = SyncifyApp.class)
+@SpringBootTest(classes = {SyncifyApp.class, TestSecurityConfiguration.class})
 @Transactional
 public class AuditResourceIT {
 

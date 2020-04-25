@@ -1,19 +1,8 @@
 # Syncify
 
-Syncify is a an application that allows users to combine Spotify and Apple to sync playlists. Currently you can post 
-track names to the backend and it will create Songs inthe database with Apple and Spotify links to the song.
-
-POST requests can be made to /api/syncifiedSongs with the following body
-
-    {"syncifyId":"7f150217-21b4-43e1-b418-a2d0d32d1939","name":"Despacito"}
-
-Where the syncifyId is a uuid4.
-
-The resulting songs can be accessed at the /api/songs endpoint.
+This application was generated using JHipster 6.7.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.7.1](https://www.jhipster.tech/documentation-archive/v6.7.1).
 
 ## Development
-
-This application was generated using JHipster 6.8.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.8.0](https://www.jhipster.tech/documentation-archive/v6.8.0).
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
 
@@ -38,6 +27,63 @@ specifying a newer version in [package.json](package.json). You can also run `np
 Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
 
 The `npm run` command will list all of the scripts available to run for this project.
+
+## OAuth 2.0 / OpenID Connect
+
+Congratulations! You've selected an excellent way to secure your JHipster application. If you're not sure what OAuth and OpenID Connect (OIDC) are, please see [What the Heck is OAuth?](https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth)
+
+To log in to your app, you'll need to have [Keycloak](https://keycloak.org) up and running. The JHipster Team has created a Docker container for you that has the default users and roles. Start Keycloak using the following command.
+
+```
+docker-compose -f src/main/docker/keycloak.yml up
+```
+
+The security settings in `src/main/resources/config/application.yml` are configured for this image.
+
+```yaml
+spring:
+  ...
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: http://localhost:9080/auth/realms/jhipster
+        registration:
+          oidc:
+            client-id: web_app
+            client-secret: web_app
+```
+
+### Okta
+
+If you'd like to use Okta instead of Keycloak, you'll need to change a few things. First, you'll need to create a free developer account at <https://developer.okta.com/signup/>. After doing so, you'll get your own Okta domain, that has a name like `https://dev-123456.okta.com`.
+
+Modify `src/main/resources/config/application.yml` to use your Okta settings.
+
+```yaml
+spring:
+  ...
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: https://{yourOktaDomain}/oauth2/default
+        registration:
+          oidc:
+            client-id: {clientId}
+            client-secret: {clientSecret}
+security:
+```
+
+Create an OIDC App in Okta to get a `{clientId}` and `{clientSecret}`. To do this, log in to your Okta Developer account and navigate to **Applications** > **Add Application**. Click **Web** and click the **Next** button. Give the app a name you’ll remember, specify `http://localhost:8080` as a Base URI, and `http://localhost:8080/login/oauth2/code/oidc` as a Login Redirect URI. Click **Done**, then Edit and add `http://localhost:8080` as a Logout redirect URI. Copy and paste the client ID and secret into your `application.yml` file.
+
+Create a `ROLE_ADMIN` and `ROLE_USER` group and add users into them. Modify e2e tests to use this account when running integration tests. You'll need to change credentials in `src/test/javascript/e2e/account/account.spec.ts` and `src/test/javascript/e2e/admin/administration.spec.ts`.
+
+Navigate to **API** > **Authorization Servers**, click the **Authorization Servers** tab and edit the default one. Click the **Claims** tab and **Add Claim**. Name it "groups", and include it in the ID Token. Set the value type to "Groups" and set the filter to be a Regex of `.*`.
+
+After making these changes, you should be good to go! If you have any issues, please post them to [Stack Overflow](https://stackoverflow.com/questions/tagged/jhipster). Make sure to tag your question with "jhipster" and "okta".
 
 ### PWA Support
 
@@ -102,7 +148,7 @@ will generate few files:
 
 ### Packaging as jar
 
-To build the final jar and optimize the syncify application for production, run:
+To build the final jar and optimize the Syncify application for production, run:
 
     ./mvnw -Pprod clean verify
 
@@ -189,14 +235,13 @@ For more information refer to [Using Docker and Docker-Compose][], this page als
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 
 [jhipster homepage and latest documentation]: https://www.jhipster.tech
-[jhipster 6.8.0 archive]: https://www.jhipster.tech/documentation-archive/v6.8.0
-[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v6.8.0/development/
-[service discovery and configuration with the jhipster-registry]: https://www.jhipster.tech/documentation-archive/v6.8.0/microservices-architecture/#jhipster-registry
-[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v6.8.0/docker-compose
-[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v6.8.0/production/
-[running tests page]: https://www.jhipster.tech/documentation-archive/v6.8.0/running-tests/
-[code quality page]: https://www.jhipster.tech/documentation-archive/v6.8.0/code-quality/
-[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v6.8.0/setting-up-ci/
+[jhipster 6.7.1 archive]: https://www.jhipster.tech/documentation-archive/v6.7.1
+[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v6.7.1/development/
+[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v6.7.1/docker-compose
+[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v6.7.1/production/
+[running tests page]: https://www.jhipster.tech/documentation-archive/v6.7.1/running-tests/
+[code quality page]: https://www.jhipster.tech/documentation-archive/v6.7.1/code-quality/
+[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v6.7.1/setting-up-ci/
 [node.js]: https://nodejs.org/
 [yarn]: https://yarnpkg.org/
 [webpack]: https://webpack.github.io/

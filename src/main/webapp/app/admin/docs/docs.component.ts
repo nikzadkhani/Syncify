@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'jhi-docs',
-  templateUrl: './docs.component.html',
-  styleUrls: ['docs.scss']
+  templateUrl: './docs.component.html'
 })
 export class DocsComponent {}

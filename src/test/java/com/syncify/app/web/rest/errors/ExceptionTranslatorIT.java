@@ -1,6 +1,7 @@
 package com.syncify.app.web.rest.errors;
 
 import com.syncify.app.SyncifyApp;
+import com.syncify.app.config.TestSecurityConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @WithMockUser
 @AutoConfigureMockMvc
-@SpringBootTest(classes = SyncifyApp.class)
+@SpringBootTest(classes = {SyncifyApp.class, TestSecurityConfiguration.class})
 public class ExceptionTranslatorIT {
 
     @Autowired

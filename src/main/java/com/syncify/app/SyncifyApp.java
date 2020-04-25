@@ -12,7 +12,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
@@ -23,7 +22,6 @@ import java.util.Collection;
 
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
-@EnableDiscoveryClient
 public class SyncifyApp {
 
     private static final Logger log = LoggerFactory.getLogger(SyncifyApp.class);
@@ -35,7 +33,7 @@ public class SyncifyApp {
     }
 
     /**
-     * Initializes syncify.
+     * Initializes Syncify.
      * <p>
      * Spring profiles can be configured with a program argument --spring.profiles.active=your-active-profile
      * <p>

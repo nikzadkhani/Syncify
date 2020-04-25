@@ -10,19 +10,18 @@
     "strict": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "suppressImplicitAnyIndexErrors": true,
     "skipLibCheck": true,
+    "suppressImplicitAnyIndexErrors": true,
     "outDir": "target/classes/static/app",
     "lib": ["es7", "dom"],
+    "typeRoots": ["node_modules/@types"],
     "baseUrl": "./",
     "paths": {
       "app/*": ["src/main/webapp/app/*"]
     },
-    "importHelpers": true
+    "importHelpers": true,
+    "allowJs": true
   },
-  "angularCompilerOptions": {
-    "genDir": "target/classes/aot",
-    "fullTemplateTypeCheck": true,
-    "preserveWhitespaces": true
-  }
+  "include": ["src/main/webapp/app", "src/test/javascript/"],
+  "exclude": ["node_modules"]
 }
