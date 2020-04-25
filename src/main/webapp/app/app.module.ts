@@ -13,6 +13,8 @@ import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ErrorComponent } from './layouts/error/error.component';
+import { CreatePlaylistComponent } from './create-playlist/create-playlist.component';
+import { ViewPlaylistComponent } from './view-playlist/view-playlist.component';
 
 @NgModule({
   imports: [
@@ -24,7 +26,7 @@ import { ErrorComponent } from './layouts/error/error.component';
     SyncifyEntityModule,
     SyncifyAppRoutingModule
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent],
+  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, CreatePlaylistComponent, ViewPlaylistComponent],
   bootstrap: [MainComponent]
 })
 export class SyncifyAppModule {}
