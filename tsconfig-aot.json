@@ -3,15 +3,15 @@
     "target": "es6",
     "module": "esnext",
     "moduleResolution": "node",
-    "sourceMap": true,
+    "sourceMap": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
     "strict": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true,
     "suppressImplicitAnyIndexErrors": true,
+    "skipLibCheck": true,
     "outDir": "target/classes/static/app",
     "lib": ["es7", "dom"],
     "typeRoots": ["node_modules/@types"],
@@ -19,9 +19,12 @@
     "paths": {
       "app/*": ["src/main/webapp/app/*"]
     },
-    "importHelpers": true,
-    "allowJs": true
+    "importHelpers": true
   },
-  "include": ["src/main/webapp/app", "src/test/javascript/"],
-  "exclude": ["node_modules"]
+  "angularCompilerOptions": {
+    "genDir": "target/classes/aot",
+    "skipMetadataEmit": true,
+    "fullTemplateTypeCheck": true,
+    "preserveWhitespaces": true
+  }
 }

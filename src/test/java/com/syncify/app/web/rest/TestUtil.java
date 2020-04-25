@@ -10,6 +10,7 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
@@ -36,6 +37,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public final class TestUtil {
 
     private static final ObjectMapper mapper = createObjectMapper();
+
+    /**
+     * MediaType for JSON
+     */
+    public static final MediaType APPLICATION_JSON = MediaType.APPLICATION_JSON;
 
     private static ObjectMapper createObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();

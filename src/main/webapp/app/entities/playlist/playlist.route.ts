@@ -4,7 +4,6 @@ import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router
 import { Observable, of, EMPTY } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
-import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { IPlaylist, Playlist } from 'app/shared/model/playlist.model';
 import { PlaylistService } from './playlist.service';
@@ -39,7 +38,7 @@ export const playlistRoute: Routes = [
     path: '',
     component: PlaylistComponent,
     data: {
-      authorities: [Authority.USER],
+      authorities: ['ROLE_USER'],
       pageTitle: 'Playlists'
     },
     canActivate: [UserRouteAccessService]
@@ -51,7 +50,7 @@ export const playlistRoute: Routes = [
       playlist: PlaylistResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: ['ROLE_USER'],
       pageTitle: 'Playlists'
     },
     canActivate: [UserRouteAccessService]
@@ -63,7 +62,7 @@ export const playlistRoute: Routes = [
       playlist: PlaylistResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: ['ROLE_USER'],
       pageTitle: 'Playlists'
     },
     canActivate: [UserRouteAccessService]
@@ -75,7 +74,7 @@ export const playlistRoute: Routes = [
       playlist: PlaylistResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: ['ROLE_USER'],
       pageTitle: 'Playlists'
     },
     canActivate: [UserRouteAccessService]

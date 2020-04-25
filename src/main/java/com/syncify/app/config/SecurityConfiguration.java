@@ -26,7 +26,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import java.util.*;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
-import com.syncify.app.security.oauth2.JwtGrantedAuthorityConverter;
+import com.syncify.app.security.oauth2.JwtAuthorityExtractor;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
@@ -75,7 +75,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(problemSupport)
         .and()
             .headers()
-            .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com data:")
+            .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:")
         .and()
             .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
         .and()
@@ -96,16 +96,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .oauth2ResourceServer()
                 .jwt()
-                .jwtAuthenticationConverter(authenticationConverter())
+                .jwtAuthenticationConverter(grantedAuthoritiesExtractor())
                 .and()
             .and()
                 .oauth2Client();
         // @formatter:on
     }
 
-    Converter<Jwt, AbstractAuthenticationToken> authenticationConverter() {
+    Converter<Jwt, AbstractAuthenticationToken> grantedAuthoritiesExtractor() {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new JwtGrantedAuthorityConverter());
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new JwtAuthorityExtractor());
         return jwtAuthenticationConverter;
     }
     /**

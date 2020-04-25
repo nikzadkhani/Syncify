@@ -1,7 +1,6 @@
 package com.syncify.app.repository;
 
 import com.syncify.app.SyncifyApp;
-
 import com.syncify.app.config.Constants;
 import com.syncify.app.config.TestSecurityConfiguration;
 import com.syncify.app.config.audit.AuditEventConverter;
