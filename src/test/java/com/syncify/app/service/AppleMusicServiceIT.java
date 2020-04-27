@@ -1,6 +1,7 @@
 package com.syncify.app.service;
 
 import com.syncify.app.SyncifyApp;
+import com.syncify.app.config.TestSecurityConfiguration;
 import com.syncify.app.domain.Song;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -8,11 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = SyncifyApp.class)
+@SpringBootTest(classes = {SyncifyApp.class, TestSecurityConfiguration.class})
 @Transactional
 public class AppleMusicServiceIT {
     private final Logger log = LoggerFactory.getLogger(AppleMusicServiceIT.class);

@@ -5,7 +5,6 @@ import com.syncify.app.config.TestSecurityConfiguration;
 import com.syncify.app.domain.Song;
 import com.syncify.app.repository.SongRepository;
 import com.syncify.app.web.rest.errors.ExceptionTranslator;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -193,7 +192,7 @@ public class SongResourceIT {
             .andExpect(jsonPath("$.[*].spotifyURL").value(hasItem(DEFAULT_SPOTIFY_URL)))
             .andExpect(jsonPath("$.[*].appleURL").value(hasItem(DEFAULT_APPLE_URL)));
     }
-    
+
     @Test
     @Transactional
     public void getSong() throws Exception {
