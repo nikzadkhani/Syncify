@@ -9,6 +9,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,6 +28,9 @@ import java.util.Date;
  */
 public class AppleQueryUtils {
 
+
+    private final Logger log = LoggerFactory.getLogger(AppleQueryUtils.class);
+
     private int responseCode;
     private String responseTrimmed;
     private JsonObject jsonObject;
@@ -34,6 +39,7 @@ public class AppleQueryUtils {
     private String privateKey;
 
     public AppleQueryUtils(String keyId, String teamId, String privateKey) {
+        log.info("creating apple query utils with teamId {} and keyId {}", teamId, keyId);
         this.keyId = keyId;
         this.teamId = teamId;
         this.privateKey = privateKey;
@@ -42,49 +48,55 @@ public class AppleQueryUtils {
         this.jsonObject = null;
     }
 
-    private PrivateKey getPrivateKey() throws Exception {
+    private PrivateKey getPrivateKey() {
 
         final PEMParser pemParser = new PEMParser(new StringReader(privateKey));
         final JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
-        final PrivateKeyInfo object = (PrivateKeyInfo) pemParser.readObject();
-
-        return converter.getPrivateKey(object);
+        final PrivateKeyInfo object;
+        try {
+            object = (PrivateKeyInfo) pemParser.readObject();
+            return converter.getPrivateKey(object);
+        } catch (Exception e) {
+            log.error("cannot create key object for {}", privateKey);
+        }
+        return null;
     }
 
     private String generateJWT(PrivateKey pKey) {
 
-        String token = Jwts.builder()
+        return Jwts.builder()
             .setHeaderParam(JwsHeader.KEY_ID, keyId)
             .setIssuer(teamId)
             .setExpiration(new Date(System.currentTimeMillis() + (1000 * 60 * 5)))
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .signWith(pKey, SignatureAlgorithm.ES256)
             .compact();
-
-        return token;
     }
 
 
-    public JsonObject getJson(String link) {
+    public JsonObject getJsonResponseForLink(String link) {
 
         String response = "";
         BufferedReader in = null;
 
+        String authString = null;
+        try {
+            authString = createAuthString();
+        } catch (Exception e) {
+            log.error("Could not create Auth String reason: {}", e.getMessage());
+        }
+
         try {
             URL url = new URL(link);
+
             HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 
-            String basicAuth = "";
-
-            basicAuth = "Bearer " + generateJWT(getPrivateKey());
 
             httpCon.setRequestMethod("GET");
-            httpCon.setRequestProperty("Authorization", basicAuth);
+            httpCon.setRequestProperty("Authorization", authString);
             this.responseCode = httpCon.getResponseCode();
 
-            System.out.println("Sending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
-
+            log.debug("Response Code : " + responseCode);
             if (this.responseCode != 200) {
                 return null;
             }
@@ -97,13 +109,13 @@ public class AppleQueryUtils {
             }
 
         } catch (MalformedURLException ex) {
-            System.out.println("MalformedURLException!!");
+            log.error("MalformedURLException!!");
         } catch (ProtocolException ex) {
-            System.out.println("ProtocolException!!");
+            log.error("ProtocolException!!");
         } catch (IOException ex) {
-            System.out.println("IOException!!");
+            log.error("IOException!!");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             if (in != null) {
                 try {
@@ -116,5 +128,9 @@ public class AppleQueryUtils {
 
         this.responseTrimmed = response.trim();
         return new JsonParser().parse(responseTrimmed).getAsJsonObject();
+    }
+
+    private String createAuthString() throws Exception {
+        return "Bearer " + generateJWT(getPrivateKey());
     }
 }

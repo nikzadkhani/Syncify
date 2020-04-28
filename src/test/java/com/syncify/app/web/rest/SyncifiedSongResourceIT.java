@@ -5,16 +5,16 @@ import com.syncify.app.config.TestSecurityConfiguration;
 import com.syncify.app.domain.Song;
 import com.syncify.app.domain.SongRequest;
 import com.syncify.app.repository.SongRepository;
+import com.syncify.app.service.AppleMusic;
+import com.syncify.app.service.SpotifyMusic;
 import com.syncify.app.web.rest.errors.ExceptionTranslator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,12 +62,18 @@ public class SyncifiedSongResourceIT {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    AppleMusic appleMusic;
+
+    @Autowired
+    SpotifyMusic spotifyMusic;
+
     private MockMvc restSongMockMvc;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SyncifiedSongResource syncifiedSongResource = new SyncifiedSongResource(songRepository);
+        final SyncifiedSongResource syncifiedSongResource = new SyncifiedSongResource(songRepository, appleMusic, spotifyMusic);
         this.restSongMockMvc = MockMvcBuilders.standaloneSetup(syncifiedSongResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

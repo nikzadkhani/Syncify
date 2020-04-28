@@ -22,7 +22,6 @@ public class AppleMusicServiceIT {
     @Autowired
     private AppleMusic appleMusic;
 
-
     @Test
     public void returnsSongOfFirstResult(){
         Song firstSongResults = appleMusic.getSongFromSearchTerm("despacito");

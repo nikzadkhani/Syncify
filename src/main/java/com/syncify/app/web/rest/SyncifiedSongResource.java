@@ -5,13 +5,10 @@ import com.syncify.app.domain.SongRequest;
 import com.syncify.app.repository.SongRepository;
 import com.syncify.app.service.AppleMusic;
 import com.syncify.app.service.SpotifyMusic;
-import com.syncify.app.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * REST controller for managing {@link com.syncify.app.domain.Song}.
@@ -41,14 +35,14 @@ public class SyncifiedSongResource {
 
     private final SongRepository songRepository;
 
-    @Autowired
     private AppleMusic appleMusic;
 
-    @Autowired
     private SpotifyMusic spotifyMusic;
 
-    public SyncifiedSongResource(SongRepository songRepository) {
+    public SyncifiedSongResource(SongRepository songRepository, AppleMusic appleMusic, SpotifyMusic spotifyMusic) {
         this.songRepository = songRepository;
+        this.appleMusic = appleMusic;
+        this.spotifyMusic = spotifyMusic;
     }
 
     /**

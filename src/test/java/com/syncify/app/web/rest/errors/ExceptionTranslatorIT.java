@@ -4,17 +4,14 @@ import com.syncify.app.SyncifyApp;
 import com.syncify.app.config.TestSecurityConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Integration tests {@link ExceptionTranslator} controller advice.
@@ -33,17 +30,6 @@ public class ExceptionTranslatorIT {
             .andExpect(status().isConflict())
             .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
             .andExpect(jsonPath("$.message").value(ErrorConstants.ERR_CONCURRENCY_FAILURE));
-    }
-
-    @Test
-    public void testMethodArgumentNotValid() throws Exception {
-         mockMvc.perform(post("/api/exception-translator-test/method-argument").content("{}").contentType(MediaType.APPLICATION_JSON))
-             .andExpect(status().isBadRequest())
-             .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-             .andExpect(jsonPath("$.message").value(ErrorConstants.ERR_VALIDATION))
-             .andExpect(jsonPath("$.fieldErrors.[0].objectName").value("test"))
-             .andExpect(jsonPath("$.fieldErrors.[0].field").value("test"))
-             .andExpect(jsonPath("$.fieldErrors.[0].message").value("NotNull"));
     }
 
     @Test
@@ -79,15 +65,6 @@ public class ExceptionTranslatorIT {
             .andExpect(jsonPath("$.message").value("error.http.401"))
             .andExpect(jsonPath("$.path").value("/api/exception-translator-test/unauthorized"))
             .andExpect(jsonPath("$.detail").value("test authentication failed!"));
-    }
-
-    @Test
-    public void testMethodNotSupported() throws Exception {
-        mockMvc.perform(post("/api/exception-translator-test/access-denied"))
-            .andExpect(status().isMethodNotAllowed())
-            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.message").value("error.http.405"))
-            .andExpect(jsonPath("$.detail").value("Request method 'POST' not supported"));
     }
 
     @Test
