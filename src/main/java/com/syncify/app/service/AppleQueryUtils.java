@@ -7,7 +7,6 @@ import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
-import org.bouncycastle.openssl.PEMException;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.slf4j.Logger;
@@ -40,7 +39,7 @@ public class AppleQueryUtils {
     private String privateKey;
 
     public AppleQueryUtils(String keyId, String teamId, String privateKey) {
-        log.info("creating apple query utils with teamId {} and keyId {}", teamId, keyId );
+        log.info("creating apple query utils with teamId {} and keyId {}", teamId, keyId);
         this.keyId = keyId;
         this.teamId = teamId;
         this.privateKey = privateKey;
@@ -84,7 +83,7 @@ public class AppleQueryUtils {
         try {
             authString = createAuthString();
         } catch (Exception e) {
-            log.error("Could not create Auth String reason: {}",e.getMessage());
+            log.error("Could not create Auth String reason: {}", e.getMessage());
         }
 
         try {
@@ -94,7 +93,7 @@ public class AppleQueryUtils {
 
 
             httpCon.setRequestMethod("GET");
-            httpCon.setRequestProperty("Authorization",  authString);
+            httpCon.setRequestProperty("Authorization", authString);
             this.responseCode = httpCon.getResponseCode();
 
             log.debug("Response Code : " + responseCode);
