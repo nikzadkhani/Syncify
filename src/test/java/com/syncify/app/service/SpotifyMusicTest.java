@@ -1,6 +1,7 @@
 package com.syncify.app.service;
 
 import com.syncify.app.SyncifyApp;
+import com.syncify.app.config.TestSecurityConfiguration;
 import com.syncify.app.domain.Song;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = SyncifyApp.class)
+@SpringBootTest(classes = {SyncifyApp.class, TestSecurityConfiguration.class})
 @Transactional
 class SpotifyMusicTest {
 
