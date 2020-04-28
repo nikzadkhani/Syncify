@@ -6,6 +6,7 @@ import com.syncify.app.domain.Song;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -17,18 +18,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class SpotifyMusicTest {
 
-    @Value("${secret.client-id}")
-    private String clientId;
-
-    @Value("${secret.client-secret}")
-    private String clientSecret;
+    @Autowired
+    SpotifyMusic spotifyMusic;
 
     private final Logger log = LoggerFactory.getLogger(SpotifyMusicTest.class);
 
-
     @Test
     public void getFirstSongForQuery() {
-        SpotifyMusic spotifyMusic = new SpotifyMusic(clientId, clientSecret);
         Song firstSongResults = spotifyMusic.getSongFromSearchTerm("despacito");
         assertThat(firstSongResults.getName().contains("despacito"));
         assertThat(firstSongResults.getIsrc().contains("USUM71607007"));
@@ -38,7 +34,6 @@ class SpotifyMusicTest {
 
     @Test
     public void getSpotifyURLToExistingSong(){
-        SpotifyMusic spotifyMusic = new SpotifyMusic(clientId, clientSecret);
         Song appleSong = new Song();
         appleSong.setName("despacito");
         appleSong.setIsrc("USUM71607007");

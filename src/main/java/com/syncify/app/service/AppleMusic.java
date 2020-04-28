@@ -37,7 +37,7 @@ public class AppleMusic {
     public JsonObject getJsonFromUrl(String link){
         AppleQueryUtils appleQueryUtils = new AppleQueryUtils(teamId,keyId, privateKey);
         try {
-            return appleQueryUtils.getJson(link);
+            return appleQueryUtils.getJsonResponseForLink(link);
         }catch(Exception e){
             throw new RuntimeException("could not get security key or connect to apple: "+e);
         }
@@ -45,7 +45,7 @@ public class AppleMusic {
 
     public Song getSongFromSearchTerm(String searchTerm) {
         AppleQueryUtils appleQueryUtils = new AppleQueryUtils(teamId,keyId, privateKey);
-        JsonObject responseJson = appleQueryUtils.getJson(appleApiUrl+searchTerm);
+        JsonObject responseJson = appleQueryUtils.getJsonResponseForLink(appleApiUrl+searchTerm);
         return makeFirstSongFromJsonObject(responseJson);
     }
 
