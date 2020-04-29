@@ -1,12 +1,16 @@
 /* ==========================================================================
 Main page styles
 ========================================================================== */
-
+.br {
+  display: block;
+  margin: 5px 0;
+}
 .hipster {
-  display: inline-block;
-  width: 347px;
-  height: 497px;
-  background: url('../../content/images/jhipster_family_member_3.svg') no-repeat center top;
+  display: flex;
+  flex-direction: row-reverse;
+  width: 500px;
+  height: 700px;
+  background: url('../../content/images/syncify_2.png') no-repeat center top;
   background-size: contain;
 }
 
@@ -17,7 +21,7 @@ Main page styles
   only screen and (min-resolution: 192dpi),
   only screen and (min-resolution: 2dppx) {
   .hipster {
-    background: url('../../content/images/jhipster_family_member_3.svg') no-repeat center top;
+    background: url('../../content/images/syncify_2.png') no-repeat center top;
     background-size: contain;
   }
 }
