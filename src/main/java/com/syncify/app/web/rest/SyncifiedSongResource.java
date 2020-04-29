@@ -3,7 +3,7 @@ package com.syncify.app.web.rest;
 import com.syncify.app.domain.Song;
 import com.syncify.app.domain.SongRequest;
 import com.syncify.app.repository.SongRepository;
-import com.syncify.app.service.AppleMusic;
+import com.syncify.app.service.AppleMusicWeb;
 import com.syncify.app.service.SpotifyMusic;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -35,11 +35,11 @@ public class SyncifiedSongResource {
 
     private final SongRepository songRepository;
 
-    private AppleMusic appleMusic;
+    private AppleMusicWeb appleMusic;
 
     private SpotifyMusic spotifyMusic;
 
-    public SyncifiedSongResource(SongRepository songRepository, AppleMusic appleMusic, SpotifyMusic spotifyMusic) {
+    public SyncifiedSongResource(SongRepository songRepository, AppleMusicWeb appleMusic, SpotifyMusic spotifyMusic) {
         this.songRepository = songRepository;
         this.appleMusic = appleMusic;
         this.spotifyMusic = spotifyMusic;

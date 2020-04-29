@@ -8,19 +8,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = {SyncifyApp.class, TestSecurityConfiguration.class})
 @Transactional
-public class AppleMusicServiceIT {
-    private final Logger log = LoggerFactory.getLogger(AppleMusicServiceIT.class);
+public class AppleMusicWebServiceIT {
+    private final Logger log = LoggerFactory.getLogger(AppleMusicWebServiceIT.class);
 
     @Autowired
-    private AppleMusic appleMusic;
+    private AppleMusicWeb appleMusic;
 
     @Test
     public void returnsSongOfFirstResult(){

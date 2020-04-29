@@ -5,7 +5,7 @@ import com.syncify.app.config.TestSecurityConfiguration;
 import com.syncify.app.domain.Song;
 import com.syncify.app.domain.SongRequest;
 import com.syncify.app.repository.SongRepository;
-import com.syncify.app.service.AppleMusic;
+import com.syncify.app.service.AppleMusicWeb;
 import com.syncify.app.service.SpotifyMusic;
 import com.syncify.app.web.rest.errors.ExceptionTranslator;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,7 +63,7 @@ public class SyncifiedSongResourceIT {
     private Validator validator;
 
     @Autowired
-    AppleMusic appleMusic;
+    AppleMusicWeb appleMusic;
 
     @Autowired
     SpotifyMusic spotifyMusic;
