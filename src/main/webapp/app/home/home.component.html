@@ -8,7 +8,7 @@
     <div class="col-md-9">
         <h1 class="display-3">Welcome to Syncify!</h1>
 
-        <p class="lead">Come get in sync and share your music!</p>
+        <b><p class="lead">Come get in sync and share your music!</p></b>
 
         <div [ngSwitch]="isAuthenticated()">
             <div class="alert alert-success" *ngSwitchCase="true">
@@ -17,39 +17,35 @@
 
             <div class="alert alert-primary" *ngSwitchCase="false">
                 <span>Welcome! Please </span>
-                <a class="alert-link" (click)="login()">sign in</a><span> to get started!</span>
-            </div>
-
-            <div class="alert alert-primary" *ngSwitchCase="false">
-                <span>Don't have an account yet?</span>&nbsp;
-                <a class="alert-link" routerLink="account/register">Register a new account!</a>
+                <a class="alert-link" (click)="login()">sign in</a><span>, you can try the default accounts <br/>- User (login="rhett@bu.edu" and password="BostonTerriers2020!").</span>
             </div>
         </div>
 
-        <p><h2>
+
+
+        <h2>
         Syncify is a web application that helps friends and families share their music using either Spotify or Apple Music. Find songs or create playlists that the user can share with a just a link!</h2>
-        <div class="br"></div>
-        <p><b><h3> <u>We are an easy to use application and only have a few simple steps before you create your first playlist:</u></h3></b></p>
-        <ol><h3>
+
+        <b><h2><i> Set up: </i></h2></b>
+        <ol><h4>
             <li> <a class="alert-link" routerLink="account/register">Create your account</a> </li>
             <li> <a class="alert-link" routerLink="createPlaylist">Search for your music </li>
             <li> Create your own custom playlist </li>
             <li> Update your master playlist </li>
             <li> Share with others </li>
-        </h3>
+        </h4>
         </ol>
-
-        </p>
-        <p><i>Developers:</i></p>
-        <ul>
+        <h2> <p><i>Developers:</i></p></h2>
+        <ul><h4>
             <li><a href="https://github.com/nikzadkhani" target="_blank" rel="noopener noreferrer">Nikad Khani    <span class="badge badge-primary">Front End</span></a></li>
             <li><a href="https://github.com/rchu99" target="_blank" rel="noopener noreferrer">Raymond Chu    <span class="badge badge-primary">Front End</span></li>
             <li><a href="https://github.com/mwhite317" target="_blank" rel="noopener noreferrer">Mark White    <span class="badge badge-danger">Back End</span></a></li>
             <li><a href="https://github.com/parkerwstone" target="_blank" rel="noopener noreferrer">Paker Stone    <span class="badge badge-danger">Back End</span></a></li>
-        </ul>
+        </h4></ul>
 
-        <p class="lead">
+        <p class="lead"> <h2>
             If you have any question about Syncify reach us!:
+        </h2>
         </p>
 
 
@@ -63,5 +59,6 @@
             <path d="M6.752 8.932l.432-.252-.504-.864-.432.252.504.864zm-6 3.5l6-3.5-.504-.864-6 3.5.504.864zm8.496-3.5l-.432-.252.504-.864.432.252-.504.864zm6 3.5l-6-3.5.504-.864 6 3.5-.504.864z"/>
         </svg>    Social Media</a>
         </ul>
+        </h2>
     </div>
 </div>
