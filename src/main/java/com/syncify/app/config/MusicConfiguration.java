@@ -1,6 +1,6 @@
 package com.syncify.app.config;
 
-import com.syncify.app.service.AppleMusic;
+import com.syncify.app.service.AppleMusicWeb;
 import com.syncify.app.service.SpotifyMusic;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,8 +27,8 @@ public class MusicConfiguration {
     private String clientSecret;
 
     @Bean
-    AppleMusic appleMusic(){
-        return new AppleMusic(keyId, teamId, privateKey) ;
+    AppleMusicWeb appleMusic(){
+        return new AppleMusicWeb(keyId, teamId, privateKey) ;
     }
 
     @Bean

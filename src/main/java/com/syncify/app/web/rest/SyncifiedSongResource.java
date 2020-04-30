@@ -3,7 +3,8 @@ package com.syncify.app.web.rest;
 import com.syncify.app.domain.Song;
 import com.syncify.app.domain.SongRequest;
 import com.syncify.app.repository.SongRepository;
-import com.syncify.app.service.AppleMusic;
+import com.syncify.app.service.AppleMusicWeb;
+import com.syncify.app.service.CachedAppleMusic;
 import com.syncify.app.service.SpotifyMusic;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -35,14 +36,17 @@ public class SyncifiedSongResource {
 
     private final SongRepository songRepository;
 
-    private AppleMusic appleMusic;
+    private AppleMusicWeb appleMusic;
 
     private SpotifyMusic spotifyMusic;
 
-    public SyncifiedSongResource(SongRepository songRepository, AppleMusic appleMusic, SpotifyMusic spotifyMusic) {
+    private CachedAppleMusic cachedAppleMusic;
+
+    public SyncifiedSongResource(SongRepository songRepository, AppleMusicWeb appleMusic, SpotifyMusic spotifyMusic) {
         this.songRepository = songRepository;
         this.appleMusic = appleMusic;
         this.spotifyMusic = spotifyMusic;
+        this.cachedAppleMusic = new CachedAppleMusic(appleMusic, songRepository);
     }
 
     /**
@@ -55,7 +59,7 @@ public class SyncifiedSongResource {
     @PostMapping("/syncifiedSongs")
     public ResponseEntity<Song> createSong(@RequestBody SongRequest songRequest) throws URISyntaxException {
         log.debug("REST request to save Song : {}", songRequest);
-        Song song = appleMusic.getSongFromSearchTerm(songRequest.getName());
+        Song song = cachedAppleMusic.getSongFromSearchTerm(songRequest.getName());
         spotifyMusic.updateSongWithSpotifyURL(song);
         song.setSyncifyId(songRequest.getSyncifyId());
 
